@@ -18,7 +18,7 @@ services:
   db:
     build:
       context: .
-      dockerfile: backend/docker/postgresql/Dockerfile
+      dockerfile: backend/docker/postgres/Dockerfile
     container_name: postgresql
     ports:
       - 5432:5432
