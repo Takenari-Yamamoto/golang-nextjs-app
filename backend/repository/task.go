@@ -5,6 +5,7 @@ import (
 	"database/sql"
 
 	"github.com/Takenari-Yamamoto/golang-nextjs-app/db/models"
+	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
@@ -31,7 +32,8 @@ func (r *TodoRepo) GetAll(ctx context.Context) ([]*models.Task, error) {
 
 func (r *TodoRepo) Create(ctx context.Context, title, description string) error {
 	task := &models.Task{
-		Title: title,
+		Title:       title,
+		Description: null.StringFrom(description),
 	}
 	err := task.Insert(ctx, r.db, boil.Infer())
 	if err != nil {

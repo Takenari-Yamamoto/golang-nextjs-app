@@ -1,0 +1,101 @@
+swagger: "2.0"
+info:
+  title: Sample API
+  version: 1.0.0
+
+schemes:
+  - http
+  - https
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+paths:
+  /users:
+    get:
+      summary: Get all users
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/User"
+    post:
+      summary: Create a user
+      parameters:
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+
+  /users/{id}:
+    get:
+      summary: Get a user by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+    put:
+      summary: Update a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+        - name: user
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/User"
+    delete:
+      summary: Delete a user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: OK
+
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      email:
+        type: string
+      created_at:
+        type: string
+        format: date-time
+      updated_at:
+        type: string
+        format: date-time
