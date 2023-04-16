@@ -24,7 +24,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"golang-nextjs-app/internal/restapi/operations"
+	"golang-nextjs-app/restapi/operations"
 )
 
 const (

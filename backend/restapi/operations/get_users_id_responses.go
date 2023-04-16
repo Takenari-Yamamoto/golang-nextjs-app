@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"golang-nextjs-app/internal/restapi/models"
+	"golang-nextjs-app/restapi/models"
 )
 
 // GetUsersIDOKCode is the HTTP code returned for type GetUsersIDOK

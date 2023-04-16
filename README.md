@@ -22,5 +22,5 @@ swagger generate server: Swagger ツールセットの一部である、Swagger 
 - -t internal: 生成されたコードの出力先を指定します。ここでは、internal ディレクトリに出力されます。
 
 ```
-swagger generate server -A golang-nextjs -f schema/swagger.yml -m restapi/models -t backend/internal
+swagger generate server -A golang-nextjs -f schema/swagger.yml -m restapi/models -t backend
 ```

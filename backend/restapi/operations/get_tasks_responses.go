@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"golang-nextjs-app/internal/restapi/models"
+	"golang-nextjs-app/restapi/models"
 )
 
 // GetTasksOKCode is the HTTP code returned for type GetTasksOK
