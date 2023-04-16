@@ -10,6 +10,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 
+	restHandler "golang-nextjs-app/handler"
 	"golang-nextjs-app/restapi/operations"
 )
 
@@ -17,10 +18,11 @@ import (
 
 func configureFlags(api *operations.GolangNextjsAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
-	
+
 }
 
 func configureAPI(api *operations.GolangNextjsAPI) http.Handler {
+
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -62,6 +64,8 @@ func configureAPI(api *operations.GolangNextjsAPI) http.Handler {
 	api.PreServerShutdown = func() {}
 
 	api.ServerShutdown = func() {}
+
+	restHandler.HandleRestApi(api)
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
 }
