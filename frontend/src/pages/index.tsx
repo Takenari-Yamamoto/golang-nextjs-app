@@ -1,6 +1,19 @@
+import { useEffect, useState } from "react";
 import Head from "next/head";
+import { apiClient } from "@/libs/api-client";
 
 export default function Home() {
+  const [users, setUsers] = useState([]);
+  const fetchUsers = async () => {
+    const res = await apiClient.get("/users");
+    console.log(res.data);
+    setUsers(res.data);
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   return (
     <>
       <Head>
