@@ -1,22 +1,16 @@
 swagger: "2.0"
 info:
-  title: Sample API
+  title: Golang Next.js API
+  description: This is a sample API
   version: 1.0.0
-
+host: localhost:5000
+basePath: /v1
 schemes:
   - http
-  - https
-
-consumes:
-  - application/json
-
-produces:
-  - application/json
-
 paths:
   /users:
     get:
-      summary: Get all users
+      summary: Get a list of users
       produces:
         - application/json
       responses:
@@ -26,76 +20,80 @@ paths:
             type: array
             items:
               $ref: "#/definitions/User"
-    post:
-      summary: Create a user
+  /users/{id}:
+    get:
+      summary: Get a user by ID
+      produces:
+        - application/json
       parameters:
-        - name: user
-          in: body
+        - name: id
+          in: path
+          description: ID of the user to get
           required: true
-          schema:
-            $ref: "#/definitions/User"
+          type: string
       responses:
         200:
           description: OK
           schema:
             $ref: "#/definitions/User"
-
-  /users/{id}:
+  /tasks:
     get:
-      summary: Get a user by ID
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: integer
+      summary: Get a list of tasks
       produces:
         - application/json
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/User"
-    put:
-      summary: Update a user
+            type: array
+            items:
+              $ref: "#/definitions/Task"
+  /tasks/{id}:
+    get:
+      summary: Get a task by ID
+      produces:
+        - application/json
       parameters:
         - name: id
           in: path
+          description: ID of the task to get
           required: true
-          type: integer
-        - name: user
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/User"
+          type: string
       responses:
         200:
           description: OK
           schema:
-            $ref: "#/definitions/User"
-    delete:
-      summary: Delete a user
-      parameters:
-        - name: id
-          in: path
-          required: true
-          type: integer
-      responses:
-        200:
-          description: OK
-
+            $ref: "#/definitions/Task"
 definitions:
   User:
     type: object
     properties:
       id:
-        type: integer
+        type: string
       name:
+        type: string
+      status:
         type: string
       email:
         type: string
+      age:
+        type: integer
       created_at:
         type: string
         format: date-time
-      updated_at:
+  Task:
+    type: object
+    properties:
+      id:
+        type: string
+      title:
+        type: string
+      content:
+        type: string
+      done:
+        type: boolean
+      created_by:
+        type: string
+      created_at:
         type: string
         format: date-time
