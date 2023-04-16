@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/Takenari-Yamamoto/golang-nextjs-app/db/models"
+	"github.com/Takenari-Yamamoto/golang-nextjs-app/database/models"
 	"github.com/volatiletech/null/v8"
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )

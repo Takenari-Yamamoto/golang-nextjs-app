@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Takenari-Yamamoto/golang-nextjs-app/db"
-	"github.com/Takenari-Yamamoto/golang-nextjs-app/repository"
+	"github.com/Takenari-Yamamoto/golang-nextjs-app/database"
+	"github.com/Takenari-Yamamoto/golang-nextjs-app/database/repository"
 )
 
 func main() {
-	db, err := db.NewDb()
+	db, err := database.NewDb()
 	if err != nil {
 		return
 	}
