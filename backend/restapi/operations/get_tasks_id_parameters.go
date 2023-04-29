@@ -11,38 +11,37 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 )
 
-// NewDeleteUsersIDParams creates a new DeleteUsersIDParams object
+// NewGetTasksIDParams creates a new GetTasksIDParams object
 //
 // There are no default values defined in the spec.
-func NewDeleteUsersIDParams() DeleteUsersIDParams {
+func NewGetTasksIDParams() GetTasksIDParams {
 
-	return DeleteUsersIDParams{}
+	return GetTasksIDParams{}
 }
 
-// DeleteUsersIDParams contains all the bound params for the delete users ID operation
+// GetTasksIDParams contains all the bound params for the get tasks ID operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters DeleteUsersID
-type DeleteUsersIDParams struct {
+// swagger:parameters GetTasksID
+type GetTasksIDParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*
+	/*ID of the task to get
 	  Required: true
 	  In: path
 	*/
-	ID int64
+	ID string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewDeleteUsersIDParams() beforehand.
-func (o *DeleteUsersIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewGetTasksIDParams() beforehand.
+func (o *GetTasksIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -58,7 +57,7 @@ func (o *DeleteUsersIDParams) BindRequest(r *http.Request, route *middleware.Mat
 }
 
 // bindID binds and validates parameter ID from path.
-func (o *DeleteUsersIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *GetTasksIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]
@@ -66,12 +65,7 @@ func (o *DeleteUsersIDParams) bindID(rawData []string, hasKey bool, formats strf
 
 	// Required: true
 	// Parameter is provided by construction from the route
-
-	value, err := swag.ConvertInt64(raw)
-	if err != nil {
-		return errors.InvalidType("id", "path", "int64", raw)
-	}
-	o.ID = value
+	o.ID = raw
 
 	return nil
 }

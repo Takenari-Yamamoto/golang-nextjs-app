@@ -14,33 +14,33 @@ import (
 	"github.com/go-openapi/validate"
 )
 
-// User user
+// Task task
 //
-// swagger:model User
-type User struct {
+// swagger:model Task
+type Task struct {
 
-	// age
-	Age int64 `json:"age,omitempty"`
+	// content
+	Content string `json:"content,omitempty"`
 
 	// created at
 	// Format: date-time
 	CreatedAt strfmt.DateTime `json:"created_at,omitempty"`
 
-	// email
-	Email string `json:"email,omitempty"`
+	// created by
+	CreatedBy string `json:"created_by,omitempty"`
+
+	// done
+	Done bool `json:"done,omitempty"`
 
 	// id
 	ID string `json:"id,omitempty"`
 
-	// name
-	Name string `json:"name,omitempty"`
-
-	// status
-	Status string `json:"status,omitempty"`
+	// title
+	Title string `json:"title,omitempty"`
 }
 
-// Validate validates this user
-func (m *User) Validate(formats strfmt.Registry) error {
+// Validate validates this task
+func (m *Task) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateCreatedAt(formats); err != nil {
@@ -53,7 +53,7 @@ func (m *User) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *User) validateCreatedAt(formats strfmt.Registry) error {
+func (m *Task) validateCreatedAt(formats strfmt.Registry) error {
 	if swag.IsZero(m.CreatedAt) { // not required
 		return nil
 	}
@@ -65,13 +65,13 @@ func (m *User) validateCreatedAt(formats strfmt.Registry) error {
 	return nil
 }
 
-// ContextValidate validates this user based on context it is used
-func (m *User) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+// ContextValidate validates this task based on context it is used
+func (m *Task) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
 // MarshalBinary interface implementation
-func (m *User) MarshalBinary() ([]byte, error) {
+func (m *Task) MarshalBinary() ([]byte, error) {
 	if m == nil {
 		return nil, nil
 	}
@@ -79,8 +79,8 @@ func (m *User) MarshalBinary() ([]byte, error) {
 }
 
 // UnmarshalBinary interface implementation
-func (m *User) UnmarshalBinary(b []byte) error {
-	var res User
+func (m *Task) UnmarshalBinary(b []byte) error {
+	var res Task
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

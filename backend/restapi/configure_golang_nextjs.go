@@ -9,17 +9,21 @@ import (
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/rs/cors"
 
-	"github.com/Takenari-Yamamoto/golang-nextjs-app/restapi/operations"
+	restHandler "golang-nextjs-app/handler"
+	"golang-nextjs-app/restapi/operations"
 )
 
-//go:generate swagger generate server --target ../../backend --name SampleAPI --spec ../../schema/swagger.yml --model-package restapi/models --principal interface{}
+//go:generate swagger generate server --target ../../backend --name GolangNextjs --spec ../../schema/swagger.yml --model-package restapi/models --principal interface{}
 
-func configureFlags(api *operations.SampleAPIAPI) {
+func configureFlags(api *operations.GolangNextjsAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
+
 }
 
-func configureAPI(api *operations.SampleAPIAPI) http.Handler {
+func configureAPI(api *operations.GolangNextjsAPI) http.Handler {
+
 	// configure the api here
 	api.ServeError = errors.ServeError
 
@@ -37,9 +41,14 @@ func configureAPI(api *operations.SampleAPIAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	if api.DeleteUsersIDHandler == nil {
-		api.DeleteUsersIDHandler = operations.DeleteUsersIDHandlerFunc(func(params operations.DeleteUsersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.DeleteUsersID has not yet been implemented")
+	if api.GetTasksHandler == nil {
+		api.GetTasksHandler = operations.GetTasksHandlerFunc(func(params operations.GetTasksParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetTasks has not yet been implemented")
+		})
+	}
+	if api.GetTasksIDHandler == nil {
+		api.GetTasksIDHandler = operations.GetTasksIDHandlerFunc(func(params operations.GetTasksIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation operations.GetTasksID has not yet been implemented")
 		})
 	}
 	if api.GetUsersHandler == nil {
@@ -52,20 +61,12 @@ func configureAPI(api *operations.SampleAPIAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetUsersID has not yet been implemented")
 		})
 	}
-	if api.PostUsersHandler == nil {
-		api.PostUsersHandler = operations.PostUsersHandlerFunc(func(params operations.PostUsersParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.PostUsers has not yet been implemented")
-		})
-	}
-	if api.PutUsersIDHandler == nil {
-		api.PutUsersIDHandler = operations.PutUsersIDHandlerFunc(func(params operations.PutUsersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.PutUsersID has not yet been implemented")
-		})
-	}
 
 	api.PreServerShutdown = func() {}
 
 	api.ServerShutdown = func() {}
+
+	restHandler.HandleRestApi(api)
 
 	return setupGlobalMiddleware(api.Serve(setupMiddlewares))
 }
@@ -91,5 +92,6 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
 // So this is a good place to plug in a panic handling middleware, logging and metrics.
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
-	return handler
+	handleCORS := cors.Default().Handler
+	return handleCORS(handler)
 }

@@ -32,7 +32,7 @@ func NewGetUsers(ctx *middleware.Context, handler GetUsersHandler) *GetUsers {
 /*
 	GetUsers swagger:route GET /users getUsers
 
-Get all users
+Get a list of users
 */
 type GetUsers struct {
 	Context *middleware.Context

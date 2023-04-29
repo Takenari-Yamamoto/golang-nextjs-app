@@ -18,28 +18,68 @@ var (
 
 func init() {
 	SwaggerJSON = json.RawMessage([]byte(`{
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
   "schemes": [
-    "http",
-    "https"
+    "http"
   ],
   "swagger": "2.0",
   "info": {
-    "title": "Sample API",
+    "description": "This is a sample API",
+    "title": "Golang Next.js API",
     "version": "1.0.0"
   },
+  "host": "localhost:5000",
+  "basePath": "/v1",
   "paths": {
+    "/tasks": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a list of tasks",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Task"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a task by ID",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the task to get",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "produces": [
           "application/json"
         ],
-        "summary": "Get all users",
+        "summary": "Get a list of users",
         "responses": {
           "200": {
             "description": "OK",
@@ -48,27 +88,6 @@ func init() {
               "items": {
                 "$ref": "#/definitions/User"
               }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a user",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
             }
           }
         }
@@ -82,7 +101,8 @@ func init() {
         "summary": "Get a user by ID",
         "parameters": [
           {
-            "type": "integer",
+            "type": "string",
+            "description": "ID of the user to get",
             "name": "id",
             "in": "path",
             "required": true
@@ -94,58 +114,42 @@ func init() {
             "schema": {
               "$ref": "#/definitions/User"
             }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a user",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "name": "user",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a user",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
     }
   },
   "definitions": {
+    "Task": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "done": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
     "User": {
       "type": "object",
       "properties": {
+        "age": {
+          "type": "integer"
+        },
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -154,42 +158,81 @@ func init() {
           "type": "string"
         },
         "id": {
-          "type": "integer"
+          "type": "string"
         },
         "name": {
           "type": "string"
         },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time"
+        "status": {
+          "type": "string"
         }
       }
     }
   }
 }`))
 	FlatSwaggerJSON = json.RawMessage([]byte(`{
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
   "schemes": [
-    "http",
-    "https"
+    "http"
   ],
   "swagger": "2.0",
   "info": {
-    "title": "Sample API",
+    "description": "This is a sample API",
+    "title": "Golang Next.js API",
     "version": "1.0.0"
   },
+  "host": "localhost:5000",
+  "basePath": "/v1",
   "paths": {
+    "/tasks": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a list of tasks",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Task"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tasks/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Get a task by ID",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "ID of the task to get",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Task"
+            }
+          }
+        }
+      }
+    },
     "/users": {
       "get": {
         "produces": [
           "application/json"
         ],
-        "summary": "Get all users",
+        "summary": "Get a list of users",
         "responses": {
           "200": {
             "description": "OK",
@@ -198,27 +241,6 @@ func init() {
               "items": {
                 "$ref": "#/definitions/User"
               }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a user",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
             }
           }
         }
@@ -232,7 +254,8 @@ func init() {
         "summary": "Get a user by ID",
         "parameters": [
           {
-            "type": "integer",
+            "type": "string",
+            "description": "ID of the user to get",
             "name": "id",
             "in": "path",
             "required": true
@@ -244,58 +267,42 @@ func init() {
             "schema": {
               "$ref": "#/definitions/User"
             }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a user",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "name": "user",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete a user",
-        "parameters": [
-          {
-            "type": "integer",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
           }
         }
       }
     }
   },
   "definitions": {
+    "Task": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "done": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
     "User": {
       "type": "object",
       "properties": {
+        "age": {
+          "type": "integer"
+        },
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -304,14 +311,13 @@ func init() {
           "type": "string"
         },
         "id": {
-          "type": "integer"
+          "type": "string"
         },
         "name": {
           "type": "string"
         },
-        "updated_at": {
-          "type": "string",
-          "format": "date-time"
+        "status": {
+          "type": "string"
         }
       }
     }

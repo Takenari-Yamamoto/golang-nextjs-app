@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"github.com/Takenari-Yamamoto/golang-nextjs-app/restapi/models"
+	"golang-nextjs-app/restapi/models"
 )
 
 // GetUsersOKCode is the HTTP code returned for type GetUsersOK

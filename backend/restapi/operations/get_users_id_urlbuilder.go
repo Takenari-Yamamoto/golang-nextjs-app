@@ -10,13 +10,11 @@ import (
 	"net/url"
 	golangswaggerpaths "path"
 	"strings"
-
-	"github.com/go-openapi/swag"
 )
 
 // GetUsersIDURL generates an URL for the get users ID operation
 type GetUsersIDURL struct {
-	ID int64
+	ID string
 
 	_basePath string
 	// avoid unkeyed usage
@@ -44,7 +42,7 @@ func (o *GetUsersIDURL) Build() (*url.URL, error) {
 
 	var _path = "/users/{id}"
 
-	id := swag.FormatInt64(o.ID)
+	id := o.ID
 	if id != "" {
 		_path = strings.Replace(_path, "{id}", id, -1)
 	} else {
@@ -52,6 +50,9 @@ func (o *GetUsersIDURL) Build() (*url.URL, error) {
 	}
 
 	_basePath := o._basePath
+	if _basePath == "" {
+		_basePath = "/v1"
+	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
 
 	return &_result, nil

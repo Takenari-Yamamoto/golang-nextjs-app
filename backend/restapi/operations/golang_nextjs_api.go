@@ -20,9 +20,9 @@ import (
 	"github.com/go-openapi/swag"
 )
 
-// NewSampleAPIAPI creates a new SampleAPI instance
-func NewSampleAPIAPI(spec *loads.Document) *SampleAPIAPI {
-	return &SampleAPIAPI{
+// NewGolangNextjsAPI creates a new GolangNextjs instance
+func NewGolangNextjsAPI(spec *loads.Document) *GolangNextjsAPI {
+	return &GolangNextjsAPI{
 		handlers:            make(map[string]map[string]http.Handler),
 		formats:             strfmt.Default,
 		defaultConsumes:     "application/json",
@@ -42,8 +42,11 @@ func NewSampleAPIAPI(spec *loads.Document) *SampleAPIAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		DeleteUsersIDHandler: DeleteUsersIDHandlerFunc(func(params DeleteUsersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation DeleteUsersID has not yet been implemented")
+		GetTasksHandler: GetTasksHandlerFunc(func(params GetTasksParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetTasks has not yet been implemented")
+		}),
+		GetTasksIDHandler: GetTasksIDHandlerFunc(func(params GetTasksIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetTasksID has not yet been implemented")
 		}),
 		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
@@ -51,17 +54,11 @@ func NewSampleAPIAPI(spec *loads.Document) *SampleAPIAPI {
 		GetUsersIDHandler: GetUsersIDHandlerFunc(func(params GetUsersIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUsersID has not yet been implemented")
 		}),
-		PostUsersHandler: PostUsersHandlerFunc(func(params PostUsersParams) middleware.Responder {
-			return middleware.NotImplemented("operation PostUsers has not yet been implemented")
-		}),
-		PutUsersIDHandler: PutUsersIDHandlerFunc(func(params PutUsersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation PutUsersID has not yet been implemented")
-		}),
 	}
 }
 
-/*SampleAPIAPI the sample API API */
-type SampleAPIAPI struct {
+/*GolangNextjsAPI This is a sample API */
+type GolangNextjsAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context
 	handlers        map[string]map[string]http.Handler
@@ -93,16 +90,14 @@ type SampleAPIAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
-	// DeleteUsersIDHandler sets the operation handler for the delete users ID operation
-	DeleteUsersIDHandler DeleteUsersIDHandler
+	// GetTasksHandler sets the operation handler for the get tasks operation
+	GetTasksHandler GetTasksHandler
+	// GetTasksIDHandler sets the operation handler for the get tasks ID operation
+	GetTasksIDHandler GetTasksIDHandler
 	// GetUsersHandler sets the operation handler for the get users operation
 	GetUsersHandler GetUsersHandler
 	// GetUsersIDHandler sets the operation handler for the get users ID operation
 	GetUsersIDHandler GetUsersIDHandler
-	// PostUsersHandler sets the operation handler for the post users operation
-	PostUsersHandler PostUsersHandler
-	// PutUsersIDHandler sets the operation handler for the put users ID operation
-	PutUsersIDHandler PutUsersIDHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -124,52 +119,52 @@ type SampleAPIAPI struct {
 }
 
 // UseRedoc for documentation at /docs
-func (o *SampleAPIAPI) UseRedoc() {
+func (o *GolangNextjsAPI) UseRedoc() {
 	o.useSwaggerUI = false
 }
 
 // UseSwaggerUI for documentation at /docs
-func (o *SampleAPIAPI) UseSwaggerUI() {
+func (o *GolangNextjsAPI) UseSwaggerUI() {
 	o.useSwaggerUI = true
 }
 
 // SetDefaultProduces sets the default produces media type
-func (o *SampleAPIAPI) SetDefaultProduces(mediaType string) {
+func (o *GolangNextjsAPI) SetDefaultProduces(mediaType string) {
 	o.defaultProduces = mediaType
 }
 
 // SetDefaultConsumes returns the default consumes media type
-func (o *SampleAPIAPI) SetDefaultConsumes(mediaType string) {
+func (o *GolangNextjsAPI) SetDefaultConsumes(mediaType string) {
 	o.defaultConsumes = mediaType
 }
 
 // SetSpec sets a spec that will be served for the clients.
-func (o *SampleAPIAPI) SetSpec(spec *loads.Document) {
+func (o *GolangNextjsAPI) SetSpec(spec *loads.Document) {
 	o.spec = spec
 }
 
 // DefaultProduces returns the default produces media type
-func (o *SampleAPIAPI) DefaultProduces() string {
+func (o *GolangNextjsAPI) DefaultProduces() string {
 	return o.defaultProduces
 }
 
 // DefaultConsumes returns the default consumes media type
-func (o *SampleAPIAPI) DefaultConsumes() string {
+func (o *GolangNextjsAPI) DefaultConsumes() string {
 	return o.defaultConsumes
 }
 
 // Formats returns the registered string formats
-func (o *SampleAPIAPI) Formats() strfmt.Registry {
+func (o *GolangNextjsAPI) Formats() strfmt.Registry {
 	return o.formats
 }
 
 // RegisterFormat registers a custom format validator
-func (o *SampleAPIAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
+func (o *GolangNextjsAPI) RegisterFormat(name string, format strfmt.Format, validator strfmt.Validator) {
 	o.formats.Add(name, format, validator)
 }
 
-// Validate validates the registrations in the SampleAPIAPI
-func (o *SampleAPIAPI) Validate() error {
+// Validate validates the registrations in the GolangNextjsAPI
+func (o *GolangNextjsAPI) Validate() error {
 	var unregistered []string
 
 	if o.JSONConsumer == nil {
@@ -180,20 +175,17 @@ func (o *SampleAPIAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
-	if o.DeleteUsersIDHandler == nil {
-		unregistered = append(unregistered, "DeleteUsersIDHandler")
+	if o.GetTasksHandler == nil {
+		unregistered = append(unregistered, "GetTasksHandler")
+	}
+	if o.GetTasksIDHandler == nil {
+		unregistered = append(unregistered, "GetTasksIDHandler")
 	}
 	if o.GetUsersHandler == nil {
 		unregistered = append(unregistered, "GetUsersHandler")
 	}
 	if o.GetUsersIDHandler == nil {
 		unregistered = append(unregistered, "GetUsersIDHandler")
-	}
-	if o.PostUsersHandler == nil {
-		unregistered = append(unregistered, "PostUsersHandler")
-	}
-	if o.PutUsersIDHandler == nil {
-		unregistered = append(unregistered, "PutUsersIDHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -204,23 +196,23 @@ func (o *SampleAPIAPI) Validate() error {
 }
 
 // ServeErrorFor gets a error handler for a given operation id
-func (o *SampleAPIAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
+func (o *GolangNextjsAPI) ServeErrorFor(operationID string) func(http.ResponseWriter, *http.Request, error) {
 	return o.ServeError
 }
 
 // AuthenticatorsFor gets the authenticators for the specified security schemes
-func (o *SampleAPIAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
+func (o *GolangNextjsAPI) AuthenticatorsFor(schemes map[string]spec.SecurityScheme) map[string]runtime.Authenticator {
 	return nil
 }
 
 // Authorizer returns the registered authorizer
-func (o *SampleAPIAPI) Authorizer() runtime.Authorizer {
+func (o *GolangNextjsAPI) Authorizer() runtime.Authorizer {
 	return nil
 }
 
 // ConsumersFor gets the consumers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *SampleAPIAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
+func (o *GolangNextjsAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Consumer {
 	result := make(map[string]runtime.Consumer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -237,7 +229,7 @@ func (o *SampleAPIAPI) ConsumersFor(mediaTypes []string) map[string]runtime.Cons
 
 // ProducersFor gets the producers for the specified media types.
 // MIME type parameters are ignored here.
-func (o *SampleAPIAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
+func (o *GolangNextjsAPI) ProducersFor(mediaTypes []string) map[string]runtime.Producer {
 	result := make(map[string]runtime.Producer, len(mediaTypes))
 	for _, mt := range mediaTypes {
 		switch mt {
@@ -253,7 +245,7 @@ func (o *SampleAPIAPI) ProducersFor(mediaTypes []string) map[string]runtime.Prod
 }
 
 // HandlerFor gets a http.Handler for the provided operation method and path
-func (o *SampleAPIAPI) HandlerFor(method, path string) (http.Handler, bool) {
+func (o *GolangNextjsAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	if o.handlers == nil {
 		return nil, false
 	}
@@ -268,8 +260,8 @@ func (o *SampleAPIAPI) HandlerFor(method, path string) (http.Handler, bool) {
 	return h, ok
 }
 
-// Context returns the middleware context for the sample API API
-func (o *SampleAPIAPI) Context() *middleware.Context {
+// Context returns the middleware context for the golang nextjs API
+func (o *GolangNextjsAPI) Context() *middleware.Context {
 	if o.context == nil {
 		o.context = middleware.NewRoutableContext(o.spec, o, nil)
 	}
@@ -277,16 +269,20 @@ func (o *SampleAPIAPI) Context() *middleware.Context {
 	return o.context
 }
 
-func (o *SampleAPIAPI) initHandlerCache() {
+func (o *GolangNextjsAPI) initHandlerCache() {
 	o.Context() // don't care about the result, just that the initialization happened
 	if o.handlers == nil {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
-	if o.handlers["DELETE"] == nil {
-		o.handlers["DELETE"] = make(map[string]http.Handler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["DELETE"]["/users/{id}"] = NewDeleteUsersID(o.context, o.DeleteUsersIDHandler)
+	o.handlers["GET"]["/tasks"] = NewGetTasks(o.context, o.GetTasksHandler)
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/tasks/{id}"] = NewGetTasksID(o.context, o.GetTasksIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -295,19 +291,11 @@ func (o *SampleAPIAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/users/{id}"] = NewGetUsersID(o.context, o.GetUsersIDHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/users"] = NewPostUsers(o.context, o.PostUsersHandler)
-	if o.handlers["PUT"] == nil {
-		o.handlers["PUT"] = make(map[string]http.Handler)
-	}
-	o.handlers["PUT"]["/users/{id}"] = NewPutUsersID(o.context, o.PutUsersIDHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP
 // can be used directly in http.ListenAndServe(":8000", api.Serve(nil))
-func (o *SampleAPIAPI) Serve(builder middleware.Builder) http.Handler {
+func (o *GolangNextjsAPI) Serve(builder middleware.Builder) http.Handler {
 	o.Init()
 
 	if o.Middleware != nil {
@@ -320,24 +308,24 @@ func (o *SampleAPIAPI) Serve(builder middleware.Builder) http.Handler {
 }
 
 // Init allows you to just initialize the handler cache, you can then recompose the middleware as you see fit
-func (o *SampleAPIAPI) Init() {
+func (o *GolangNextjsAPI) Init() {
 	if len(o.handlers) == 0 {
 		o.initHandlerCache()
 	}
 }
 
 // RegisterConsumer allows you to add (or override) a consumer for a media type.
-func (o *SampleAPIAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
+func (o *GolangNextjsAPI) RegisterConsumer(mediaType string, consumer runtime.Consumer) {
 	o.customConsumers[mediaType] = consumer
 }
 
 // RegisterProducer allows you to add (or override) a producer for a media type.
-func (o *SampleAPIAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
+func (o *GolangNextjsAPI) RegisterProducer(mediaType string, producer runtime.Producer) {
 	o.customProducers[mediaType] = producer
 }
 
 // AddMiddlewareFor adds a http middleware to existing handler
-func (o *SampleAPIAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
+func (o *GolangNextjsAPI) AddMiddlewareFor(method, path string, builder middleware.Builder) {
 	um := strings.ToUpper(method)
 	if path == "/" {
 		path = ""

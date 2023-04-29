@@ -9,17 +9,22 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
+	"strings"
 )
 
-// PostUsersURL generates an URL for the post users operation
-type PostUsersURL struct {
+// GetTasksIDURL generates an URL for the get tasks ID operation
+type GetTasksIDURL struct {
+	ID string
+
 	_basePath string
+	// avoid unkeyed usage
+	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostUsersURL) WithBasePath(bp string) *PostUsersURL {
+func (o *GetTasksIDURL) WithBasePath(bp string) *GetTasksIDURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -27,24 +32,34 @@ func (o *PostUsersURL) WithBasePath(bp string) *PostUsersURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *PostUsersURL) SetBasePath(bp string) {
+func (o *GetTasksIDURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *PostUsersURL) Build() (*url.URL, error) {
+func (o *GetTasksIDURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/users"
+	var _path = "/tasks/{id}"
+
+	id := o.ID
+	if id != "" {
+		_path = strings.Replace(_path, "{id}", id, -1)
+	} else {
+		return nil, errors.New("id is required on GetTasksIDURL")
+	}
 
 	_basePath := o._basePath
+	if _basePath == "" {
+		_basePath = "/v1"
+	}
 	_result.Path = golangswaggerpaths.Join(_basePath, _path)
 
 	return &_result, nil
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *PostUsersURL) Must(u *url.URL, err error) *url.URL {
+func (o *GetTasksIDURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -55,17 +70,17 @@ func (o *PostUsersURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *PostUsersURL) String() string {
+func (o *GetTasksIDURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *PostUsersURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *GetTasksIDURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on PostUsersURL")
+		return nil, errors.New("scheme is required for a full url on GetTasksIDURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on PostUsersURL")
+		return nil, errors.New("host is required for a full url on GetTasksIDURL")
 	}
 
 	base, err := o.Build()
@@ -79,6 +94,6 @@ func (o *PostUsersURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *PostUsersURL) StringFull(scheme, host string) string {
+func (o *GetTasksIDURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }
