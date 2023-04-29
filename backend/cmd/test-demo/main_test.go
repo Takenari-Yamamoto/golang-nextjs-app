@@ -4,20 +4,30 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
-func TestAdd(t *testing.T) {
-	assert := assert.New(t)
-
-	result := Add(1, 2)
-	expected := 3
-	assert.Equal(expected, result, "1 + 2 は 3 になるべきです")
+type MockFetcher struct {
+	mock.Mock
 }
 
-func TestAddWithZero(t *testing.T) {
-	assert := assert.New(t)
+func (m *MockFetcher) FetchData() (string, error) {
+	args := m.Called()
+	return args.String(0), args.Error(1)
+}
 
-	result := Add(1, 0)
-	expected := 1
-	assert.Equal(expected, result, "1 + 0 は 1 になるべきです")
+func TestGetData(t *testing.T) {
+	fetcher := new(MockFetcher)
+
+	fetcher.On("FetchData").Return("mocked data", nil)
+
+	// GetData関数をテスト
+	data, err := GetData(fetcher)
+
+	// アサーション
+	assert.NoError(t, err)
+	assert.Equal(t, "mocked data", data)
+
+	// FetchDataメソッドが1回呼ばれたことを確認
+	fetcher.AssertNumberOfCalls(t, "FetchData", 1)
 }

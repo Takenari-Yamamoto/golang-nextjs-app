@@ -2,8 +2,12 @@ package main
 
 import "fmt"
 
-func Add(a, b int) int {
-	return a + b
+type Fethcer interface {
+	FetchData() (string, error)
+}
+
+func GetData(f Fethcer) (string, error) {
+	return f.FetchData()
 }
 
 func main() {
