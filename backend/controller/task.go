@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
+	"github.com/google/uuid"
 )
 
 type TaskController struct {
@@ -22,10 +23,11 @@ func (c *TaskController) GetAllTasks(params operations.GetTasksParams) middlewar
 
 	var tasks []*restApiModel.Task
 	for i := 0; i < 30; i++ {
+		u, _ := uuid.NewRandom()
 		tasks = append(tasks, &restApiModel.Task{
-			ID:        "id" + string(i),
-			Title:     "title",
-			Content:   "content",
+			ID:        u.String(),
+			Title:     "dummy title",
+			Content:   "dummy content",
 			Done:      false,
 			CreatedAt: strfmt.DateTime{},
 			CreatedBy: "TAKENARI",
