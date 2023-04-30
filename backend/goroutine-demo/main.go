@@ -1,20 +1,22 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
+import "fmt"
 
-func square(n int) {
-	fmt.Printf("Square of %d is %d\n", n, n*n)
+func square(numbers []int, ch chan int) {
+	for _, n := range numbers {
+		ch <- n * n
+	}
+	close(ch)
 }
 
 func main() {
-	// シーケンシャルに関数を実行
-	go square(2)
-	go square(4)
-	go square(6)
+	numbers := []int{2, 4, 6}
+	ch := make(chan int)
 
-	// シーケンシャルな実行が終わるのを待つ
-	time.Sleep(1 * time.Second)
+	go square(numbers, ch)
+
+	// チャネルからデータを受信
+	for value := range ch {
+		fmt.Println(value)
+	}
 }
