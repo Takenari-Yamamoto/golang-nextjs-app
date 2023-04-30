@@ -24,3 +24,27 @@ swagger generate server: Swagger ツールセットの一部である、Swagger 
 ```
 swagger generate server -A golang-nextjs -f schema/swagger.yml -m restapi/models -t backend
 ```
+
+# データベースの接続、マイグレーションまで
+1. マイグレーションファイル作成
+```
+migrate create -ext sql -dir 出力先 -seq テーブル名
+```
+```
+migrate create -ext sql -dir database/migrations -seq　tasks
+```
+tasks テーブルのマイグレーションファイルが作成されるので、CREATE と DROP する SQL文を書く
+
+2. マイグレーションファイルの内容をDBに反映する
+migration up コマンドを叩く
+```
+migrate -database "postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-password}@localhost:5432/${POSTGRES_DB:-golang-nextjs}?sslmode=disable" -path database/migrations up
+```
+これでデータベースにマイグレーションファイルの内容が取り込まれてるはず
+
+3. SQLBoiler を使ってデータベースのスキーマからコードを生成
+sqlboiler.tomlを作成し、下記コマンドを実行
+```
+sqlboiler psql --output database/models --pkgname models --wipe
+```
+
