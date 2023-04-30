@@ -1,22 +1,30 @@
 package main
 
-import "fmt"
-
-func square(numbers []int, ch chan int) {
-	for _, n := range numbers {
-		ch <- n * n
-	}
-	close(ch)
-}
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
-	numbers := []int{2, 4, 6}
-	ch := make(chan int)
+	ch1 := make(chan string)
+	ch2 := make(chan string)
 
-	go square(numbers, ch)
+	go func() {
+		time.Sleep(1 * time.Second)
+		ch1 <- "Message from channel 1"
+	}()
 
-	// チャネルからデータを受信
-	for value := range ch {
-		fmt.Println(value)
+	go func() {
+		time.Sleep(2 * time.Second)
+		ch2 <- "Message from channel 2"
+	}()
+
+	for i := 0; i < 2; i++ {
+		select {
+		case msg1 := <-ch1:
+			fmt.Println(msg1)
+		case msg2 := <-ch2:
+			fmt.Println(msg2)
+		}
 	}
 }
