@@ -3,22 +3,11 @@ import Head from "next/head";
 import { apiClient } from "@/libs/api-client";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase";
+import WithAuth from "@/middleware/withAuth";
+import { useAuth } from "@/contexts/AuthContext";
 
-export default function Home() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      // ログイン成功後の処理
-    } catch (error) {
-      setError("error");
-    }
-  };
+const Home: React.FC = () => {
+  const { user } = useAuth();
 
   return (
     <>
@@ -30,25 +19,11 @@ export default function Home() {
       </Head>
       <main>
         <div>
-          <h1>Login</h1>
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit">Login</button>
-          </form>
-          {error && <p>{error}</p>}
+          <p>Name: {user?.email}</p>
         </div>
       </main>
     </>
   );
-}
+};
+
+export default WithAuth(Home);

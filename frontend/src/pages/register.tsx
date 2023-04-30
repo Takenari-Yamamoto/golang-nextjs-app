@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase";
+import WithoutAuth from "@/middleware/withoutAuth";
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -55,4 +56,4 @@ const SignupPage: React.FC = () => {
   );
 };
 
-export default SignupPage;
+export default WithoutAuth(SignupPage);

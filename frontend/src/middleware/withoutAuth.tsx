@@ -7,7 +7,7 @@ type Props<P = {}> = P & {
   Component: ComponentType<P>;
 };
 
-const withoutAuth = <P extends Record<string, unknown>>(
+const WithoutAuth = <P extends Record<string, unknown>>(
   Component: ComponentType<P>
 ) => {
   const NotAuthComponent: React.FC<Props<P>> = (props) => {
@@ -27,4 +27,4 @@ const withoutAuth = <P extends Record<string, unknown>>(
   return NotAuthComponent;
 };
 
-export default withoutAuth;
+export default WithoutAuth;

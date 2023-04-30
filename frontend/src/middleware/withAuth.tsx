@@ -6,7 +6,7 @@ type Props<P = {}> = P & {
   Component: ComponentType<P>;
 };
 
-const withAuth = <P extends Record<string, unknown>>(
+const WithAuth = <P extends Record<string, unknown>>(
   Component: ComponentType<P>
 ) => {
   const AuthComponent: React.FC<Props<P>> = (props) => {
@@ -26,4 +26,4 @@ const withAuth = <P extends Record<string, unknown>>(
   return AuthComponent;
 };
 
-export default withAuth;
+export default WithAuth;
