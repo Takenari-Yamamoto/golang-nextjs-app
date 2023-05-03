@@ -11,4 +11,4 @@ WORKDIR /go/src/app
 
 COPY backend .
 
-CMD ["go", "run", "cmd/golang-nextjs-server"]
+CMD ["go", "run", "cmd/golang-nextjs-server/main.go", "--host", "0.0.0.0", "--port", "8000"]
