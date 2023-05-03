@@ -4,16 +4,16 @@ import (
 	"context"
 	"golang-nextjs-app/gateway/postgres"
 
-	"firebase.google.com/go/auth"
+	"firebase.google.com/go/v4/auth"
 )
 
 type TaskUsecase struct {
-	repo       *postgres.TaskRepository
+	repo       postgres.ITaskRepository
 	authClient *auth.Client
 }
 
 func NewTaskUsecase(
-	repo *postgres.TaskRepository,
+	repo postgres.ITaskRepository,
 	authClient *auth.Client,
 ) *TaskUsecase {
 	return &TaskUsecase{
@@ -33,5 +33,6 @@ func (t *TaskUsecase) CreateTask(ctx context.Context, title, content, token stri
 	if err != nil {
 		return nil, err
 	}
+
 	return res, nil
 }

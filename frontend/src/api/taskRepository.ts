@@ -1,23 +1,35 @@
-import { AxiosInstance } from "axios";
+import { AxiosInstance, AxiosResponse } from "axios";
 
 export type Task = {
-  content: string;
-  created_at: string;
-  created_by: string;
   id: string;
   title: string;
+  content: string;
+  created_by: string;
+  created_at: string;
+};
+
+export type CreateTaskParams = {
+  title: string;
+  content: string;
 };
 
 interface TaskRepository {
   getTasks(): Promise<any>;
-  //   getTask(id: number): Promise<Task>;
-  //   createTask(task: Task): Promise<Task>;
-  //   updateTask(task: Task): Promise<Task>;
-  //   deleteTask(id: number): Promise<void>;
+  getTaskById(id: string): Promise<AxiosResponse<Task>>;
+  createTask(task: CreateTaskParams): Promise<Task>;
+  updateTask(task: Task): Promise<Task>;
+  deleteTask(id: number): Promise<void>;
 }
 
 export const taskRepository = (client: AxiosInstance): TaskRepository => {
   return {
-    getTasks: async (): Promise<Task> => await client.get("/tasks"),
+    getTasks: (): Promise<Task> => client.get("/tasks"),
+    getTaskById: (id: string): Promise<AxiosResponse<Task>> =>
+      client.get(`/tasks/${id}`),
+    createTask: (task: CreateTaskParams): Promise<Task> =>
+      client.post("/task", task),
+    updateTask: (task: Task): Promise<Task> =>
+      client.patch(`/tasks/${task.id}`, task),
+    deleteTask: (id: number): Promise<void> => client.delete(`/tasks/${id}`),
   };
 };

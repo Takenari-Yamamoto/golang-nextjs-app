@@ -13,6 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 )
 
 // PostTaskHandlerFunc turns a function with the right signature into a post task handler
@@ -92,6 +93,79 @@ func (o *PostTaskBadRequestBody) MarshalBinary() ([]byte, error) {
 // UnmarshalBinary interface implementation
 func (o *PostTaskBadRequestBody) UnmarshalBinary(b []byte) error {
 	var res PostTaskBadRequestBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+// PostTaskBody post task body
+//
+// swagger:model PostTaskBody
+type PostTaskBody struct {
+
+	// The content of the task
+	// Required: true
+	Content *string `json:"content"`
+
+	// The title of the task
+	// Required: true
+	Title *string `json:"title"`
+}
+
+// Validate validates this post task body
+func (o *PostTaskBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateContent(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateTitle(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *PostTaskBody) validateContent(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"content", "body", o.Content); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PostTaskBody) validateTitle(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"title", "body", o.Title); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this post task body based on context it is used
+func (o *PostTaskBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *PostTaskBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *PostTaskBody) UnmarshalBinary(b []byte) error {
+	var res PostTaskBody
 	if err := swag.ReadJSON(b, &res); err != nil {
 		return err
 	}

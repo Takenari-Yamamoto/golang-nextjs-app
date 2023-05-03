@@ -1,9 +1,9 @@
 import { useEffect } from "react";
+import { useTask } from "@/hooks/api/useTask";
+import { TaskCard } from "@/components/task/card/TaskCard";
 import Head from "next/head";
 import WithAuth from "@/middleware/withAuth";
-import { useTask } from "@/hooks/api/useTask";
 import style from "@/styles/pages/task-list.module.scss";
-import { TaskCard } from "@/components/task/card/TaskCard";
 
 const Home: React.FC = () => {
   const { tasks, fetchAllTasks, loading, error } = useTask();
@@ -14,20 +14,16 @@ const Home: React.FC = () => {
   }, []);
 
   if (loading) {
-    console.log("Fetching tasks...");
     <div>Loading</div>;
   }
 
   if (error) {
-    console.error("ERROR", error);
     return <div>Error</div>;
   }
 
   if (!tasks) {
     return <div>No tasks</div>;
   }
-
-  console.log("TASKS", tasks);
 
   return (
     <>

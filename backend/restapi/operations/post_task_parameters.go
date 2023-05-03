@@ -6,21 +6,14 @@ package operations
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"io"
 	"net/http"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/validate"
 )
-
-// PostTaskMaxParseMemory sets the maximum size in bytes for
-// the multipart form parser for this operation.
-//
-// The default value is 32 MB.
-// The multipart parser stores up to this + 10MB.
-var PostTaskMaxParseMemory int64 = 32 << 20
 
 // NewPostTaskParams creates a new PostTaskParams object
 //
@@ -39,16 +32,11 @@ type PostTaskParams struct {
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*The content of the task.
+	/*Task object that needs to be added
 	  Required: true
-	  In: formData
+	  In: body
 	*/
-	Content string
-	/*The title of the task.
-	  Required: true
-	  In: formData
-	*/
-	Title string
+	Body PostTaskBody
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -60,66 +48,35 @@ func (o *PostTaskParams) BindRequest(r *http.Request, route *middleware.MatchedR
 
 	o.HTTPRequest = r
 
-	if err := r.ParseMultipartForm(PostTaskMaxParseMemory); err != nil {
-		if err != http.ErrNotMultipart {
-			return errors.New(400, "%v", err)
-		} else if err := r.ParseForm(); err != nil {
-			return errors.New(400, "%v", err)
+	if runtime.HasBody(r) {
+		defer r.Body.Close()
+		var body PostTaskBody
+		if err := route.Consumer.Consume(r.Body, &body); err != nil {
+			if err == io.EOF {
+				res = append(res, errors.Required("body", "body", ""))
+			} else {
+				res = append(res, errors.NewParseError("body", "body", "", err))
+			}
+		} else {
+			// validate body object
+			if err := body.Validate(route.Formats); err != nil {
+				res = append(res, err)
+			}
+
+			ctx := validate.WithOperationRequest(r.Context())
+			if err := body.ContextValidate(ctx, route.Formats); err != nil {
+				res = append(res, err)
+			}
+
+			if len(res) == 0 {
+				o.Body = body
+			}
 		}
-	}
-	fds := runtime.Values(r.Form)
-
-	fdContent, fdhkContent, _ := fds.GetOK("content")
-	if err := o.bindContent(fdContent, fdhkContent, route.Formats); err != nil {
-		res = append(res, err)
-	}
-
-	fdTitle, fdhkTitle, _ := fds.GetOK("title")
-	if err := o.bindTitle(fdTitle, fdhkTitle, route.Formats); err != nil {
-		res = append(res, err)
+	} else {
+		res = append(res, errors.Required("body", "body", ""))
 	}
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-// bindContent binds and validates parameter Content from formData.
-func (o *PostTaskParams) bindContent(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("content", "formData", rawData)
-	}
-	var raw string
-	if len(rawData) > 0 {
-		raw = rawData[len(rawData)-1]
-	}
-
-	// Required: true
-
-	if err := validate.RequiredString("content", "formData", raw); err != nil {
-		return err
-	}
-	o.Content = raw
-
-	return nil
-}
-
-// bindTitle binds and validates parameter Title from formData.
-func (o *PostTaskParams) bindTitle(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	if !hasKey {
-		return errors.Required("title", "formData", rawData)
-	}
-	var raw string
-	if len(rawData) > 0 {
-		raw = rawData[len(rawData)-1]
-	}
-
-	// Required: true
-
-	if err := validate.RequiredString("title", "formData", raw); err != nil {
-		return err
-	}
-	o.Title = raw
-
 	return nil
 }

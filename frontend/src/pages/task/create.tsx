@@ -3,30 +3,53 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import WithAuth from "@/middleware/withAuth";
 import style from "@/styles/pages/task-create.module.scss";
+import { useTask } from "@/hooks/api/useTask";
 
 const CreateTask = () => {
-  const [value, setValue] = useState("");
-  const handleChange = (event: any) => {
-    setValue(event.target.value);
+  const { createTask, loading } = useTask();
+
+  const [value, setValue] = useState({
+    title: "",
+    content: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.name);
+    setValue({
+      ...value,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  //  クリックした
+  const handleClick = () => {
+    console.log(value);
+    createTask({
+      title: value.title,
+      content: value.content,
+    });
   };
 
   return (
     <div className={style.root}>
       <h2>タスクを新規作成</h2>
       <TextField
-        label="テキスト入力"
+        label="タイトル"
+        name="title"
         variant="outlined"
-        value={value}
+        value={value.title}
         onChange={handleChange}
       />
       <TextField
-        label="テキスト入力"
+        label="コンテンツ"
+        name="content"
         variant="outlined"
-        value={value}
+        value={value.content}
         onChange={handleChange}
       />
-      {/* ボタンを配置 */}
-      <Button variant="contained">作成</Button>
+      <Button variant="contained" disabled={loading} onClick={handleClick}>
+        作成
+      </Button>
     </div>
   );
 };

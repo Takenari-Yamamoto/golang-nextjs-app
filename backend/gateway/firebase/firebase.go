@@ -2,7 +2,6 @@ package firebase
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	firebase "firebase.google.com/go/v4"
@@ -18,7 +17,7 @@ func NewFirebase() *Firebase {
 }
 
 func InitFirebase() *firebase.App {
-	opt := option.WithCredentialsFile("/Users/takenariyamamoto/Downloads/golang-nextjs-app-firebase-adminsdk-xbyxa-0a3e6503bb.json")
+	opt := option.WithCredentialsFile("config/firebase_credentials.json")
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		log.Fatalf("firebase.NewApp: %v", err)
@@ -28,7 +27,6 @@ func InitFirebase() *firebase.App {
 
 func (f *Firebase) VerifyIDToken(ctx context.Context, idToken string) (*auth.Token, error) {
 	app := InitFirebase()
-	fmt.Println(app)
 	client, err := app.Auth(ctx)
 	if err != nil {
 		log.Fatalf("error getting Auth client: %v\n", err)

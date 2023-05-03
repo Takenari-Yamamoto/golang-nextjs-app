@@ -36,18 +36,27 @@ func init() {
         "summary": "Create a new task",
         "parameters": [
           {
-            "type": "string",
-            "description": "The title of the task.",
-            "name": "title",
-            "in": "formData",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "The content of the task.",
-            "name": "content",
-            "in": "formData",
-            "required": true
+            "description": "Task object that needs to be added",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "description": "The content of the task",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "The title of the task",
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -264,18 +273,27 @@ func init() {
         "summary": "Create a new task",
         "parameters": [
           {
-            "type": "string",
-            "description": "The title of the task.",
-            "name": "title",
-            "in": "formData",
-            "required": true
-          },
-          {
-            "type": "string",
-            "description": "The content of the task.",
-            "name": "content",
-            "in": "formData",
-            "required": true
+            "description": "Task object that needs to be added",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "description": "The content of the task",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "The title of the task",
+                  "type": "string"
+                }
+              }
+            }
           }
         ],
         "responses": {
