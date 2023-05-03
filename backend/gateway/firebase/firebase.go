@@ -10,6 +10,7 @@ import (
 	"google.golang.org/api/option"
 )
 
+// TODO: firebase.NewAppは外から渡したいかも
 type Firebase struct{}
 
 func NewFirebase() *Firebase {
