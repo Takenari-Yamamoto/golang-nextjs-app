@@ -54,6 +54,9 @@ func NewGolangNextjsAPI(spec *loads.Document) *GolangNextjsAPI {
 		GetUsersIDHandler: GetUsersIDHandlerFunc(func(params GetUsersIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetUsersID has not yet been implemented")
 		}),
+		PostTaskHandler: PostTaskHandlerFunc(func(params PostTaskParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostTask has not yet been implemented")
+		}),
 	}
 }
 
@@ -98,6 +101,8 @@ type GolangNextjsAPI struct {
 	GetUsersHandler GetUsersHandler
 	// GetUsersIDHandler sets the operation handler for the get users ID operation
 	GetUsersIDHandler GetUsersIDHandler
+	// PostTaskHandler sets the operation handler for the post task operation
+	PostTaskHandler PostTaskHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -186,6 +191,9 @@ func (o *GolangNextjsAPI) Validate() error {
 	}
 	if o.GetUsersIDHandler == nil {
 		unregistered = append(unregistered, "GetUsersIDHandler")
+	}
+	if o.PostTaskHandler == nil {
+		unregistered = append(unregistered, "PostTaskHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -291,6 +299,10 @@ func (o *GolangNextjsAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/users/{id}"] = NewGetUsersID(o.context, o.GetUsersIDHandler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
+	}
+	o.handlers["POST"]["/task"] = NewPostTask(o.context, o.PostTaskHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

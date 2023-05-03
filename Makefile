@@ -23,3 +23,7 @@ clean:
 
 generate-models:
 	docker-compose exec backend sqlboiler psql
+
+# Swagger から Go のコードを生成
+generate-go-swagger:
+	swagger generate server -A golang-nextjs -f schema/swagger.yml -m restapi/models -t backend
