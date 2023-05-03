@@ -1,6 +1,7 @@
 import React from "react";
 import { Task } from "@/api/taskRepository";
 import style from "./task-card.module.scss";
+import { handleLink } from "@/libs/router";
 
 type Props = Task & {
   className?: string;
@@ -14,8 +15,13 @@ export const TaskCard: React.FC<Props> = ({
   created_by,
   className = "",
 }) => {
+  //　本当は親で持たせたい
+  const moveToDetail = () => {
+    handleLink(`/task/${id}`);
+  };
+
   return (
-    <div className={`${style.root} ${className}`}>
+    <div className={`${style.root} ${className}`} onClick={moveToDetail}>
       <p>{id}</p>
       <p>{title}</p>
       <p>{content}</p>

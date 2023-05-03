@@ -1,13 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
-import { apiClient } from "@/libs/api-client";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/config/firebase";
 import WithAuth from "@/middleware/withAuth";
-import { useAuth } from "@/contexts/AuthContext";
+import { useTask } from "@/hooks/api/useTask";
+import style from "@/styles/pages/task-list.module.scss";
+import { TaskCard } from "@/components/task/card/TaskCard";
 
 const Home: React.FC = () => {
-  const { user } = useAuth();
+  const { tasks, fetchAllTasks, loading, error } = useTask();
+
+  useEffect(() => {
+    fetchAllTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading) {
+    console.log("Fetching tasks...");
+    <div>Loading</div>;
+  }
+
+  if (error) {
+    console.error("ERROR", error);
+    return <div>Error</div>;
+  }
+
+  if (!tasks) {
+    return <div>No tasks</div>;
+  }
+
+  console.log("TASKS", tasks);
 
   return (
     <>
@@ -18,8 +38,10 @@ const Home: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div>
-          <p>Name: {user?.email}</p>
+        <div className={style.root}>
+          {tasks.map((task, i) => {
+            return <TaskCard className={style.card} key={i} {...task} />;
+          })}
         </div>
       </main>
     </>
