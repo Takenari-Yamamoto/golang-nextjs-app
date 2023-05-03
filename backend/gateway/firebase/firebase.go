@@ -2,7 +2,6 @@ package firebase
 
 import (
 	"context"
-	"fmt"
 	"log"
 
 	firebase "firebase.google.com/go/v4"
@@ -29,7 +28,6 @@ func InitFirebase() *firebase.App {
 
 func (f *Firebase) VerifyIDToken(ctx context.Context, idToken string) (*auth.Token, error) {
 	app := InitFirebase()
-	fmt.Println(app)
 	client, err := app.Auth(ctx)
 	if err != nil {
 		log.Fatalf("error getting Auth client: %v\n", err)

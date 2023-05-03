@@ -6,9 +6,12 @@ package operations
 // Editing this file might prove futile when you re-run the generate command
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/strfmt"
+	"github.com/go-openapi/swag"
 )
 
 // GetTasksHandlerFunc turns a function with the right signature into a get tasks handler
@@ -53,4 +56,80 @@ func (o *GetTasks) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	res := o.Handler.Handle(Params) // actually handle the request
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
+}
+
+// GetTasksBadRequestBody get tasks bad request body
+//
+// swagger:model GetTasksBadRequestBody
+type GetTasksBadRequestBody struct {
+
+	// message
+	// Example: Invalid input, please provide the required parameters.
+	Message string `json:"message,omitempty"`
+}
+
+// Validate validates this get tasks bad request body
+func (o *GetTasksBadRequestBody) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this get tasks bad request body based on context it is used
+func (o *GetTasksBadRequestBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetTasksBadRequestBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetTasksBadRequestBody) UnmarshalBinary(b []byte) error {
+	var res GetTasksBadRequestBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
+}
+
+// GetTasksInternalServerErrorBody get tasks internal server error body
+//
+// swagger:model GetTasksInternalServerErrorBody
+type GetTasksInternalServerErrorBody struct {
+
+	// message
+	// Example: Internal server error.
+	Message string `json:"message,omitempty"`
+}
+
+// Validate validates this get tasks internal server error body
+func (o *GetTasksInternalServerErrorBody) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this get tasks internal server error body based on context it is used
+func (o *GetTasksInternalServerErrorBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *GetTasksInternalServerErrorBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *GetTasksInternalServerErrorBody) UnmarshalBinary(b []byte) error {
+	var res GetTasksInternalServerErrorBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
 }

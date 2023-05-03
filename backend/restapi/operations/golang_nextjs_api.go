@@ -42,17 +42,17 @@ func NewGolangNextjsAPI(spec *loads.Document) *GolangNextjsAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		DeleteTasksIDHandler: DeleteTasksIDHandlerFunc(func(params DeleteTasksIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteTasksID has not yet been implemented")
+		}),
 		GetTasksHandler: GetTasksHandlerFunc(func(params GetTasksParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetTasks has not yet been implemented")
 		}),
 		GetTasksIDHandler: GetTasksIDHandlerFunc(func(params GetTasksIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetTasksID has not yet been implemented")
 		}),
-		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
-		}),
-		GetUsersIDHandler: GetUsersIDHandlerFunc(func(params GetUsersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetUsersID has not yet been implemented")
+		PostTaskHandler: PostTaskHandlerFunc(func(params PostTaskParams) middleware.Responder {
+			return middleware.NotImplemented("operation PostTask has not yet been implemented")
 		}),
 	}
 }
@@ -90,14 +90,14 @@ type GolangNextjsAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// DeleteTasksIDHandler sets the operation handler for the delete tasks ID operation
+	DeleteTasksIDHandler DeleteTasksIDHandler
 	// GetTasksHandler sets the operation handler for the get tasks operation
 	GetTasksHandler GetTasksHandler
 	// GetTasksIDHandler sets the operation handler for the get tasks ID operation
 	GetTasksIDHandler GetTasksIDHandler
-	// GetUsersHandler sets the operation handler for the get users operation
-	GetUsersHandler GetUsersHandler
-	// GetUsersIDHandler sets the operation handler for the get users ID operation
-	GetUsersIDHandler GetUsersIDHandler
+	// PostTaskHandler sets the operation handler for the post task operation
+	PostTaskHandler PostTaskHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -175,17 +175,17 @@ func (o *GolangNextjsAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.DeleteTasksIDHandler == nil {
+		unregistered = append(unregistered, "DeleteTasksIDHandler")
+	}
 	if o.GetTasksHandler == nil {
 		unregistered = append(unregistered, "GetTasksHandler")
 	}
 	if o.GetTasksIDHandler == nil {
 		unregistered = append(unregistered, "GetTasksIDHandler")
 	}
-	if o.GetUsersHandler == nil {
-		unregistered = append(unregistered, "GetUsersHandler")
-	}
-	if o.GetUsersIDHandler == nil {
-		unregistered = append(unregistered, "GetUsersIDHandler")
+	if o.PostTaskHandler == nil {
+		unregistered = append(unregistered, "PostTaskHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -275,6 +275,10 @@ func (o *GolangNextjsAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/tasks/{id}"] = NewDeleteTasksID(o.context, o.DeleteTasksIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -283,14 +287,10 @@ func (o *GolangNextjsAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/tasks/{id}"] = NewGetTasksID(o.context, o.GetTasksIDHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
+	if o.handlers["POST"] == nil {
+		o.handlers["POST"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/users/{id}"] = NewGetUsersID(o.context, o.GetUsersIDHandler)
+	o.handlers["POST"]["/task"] = NewPostTask(o.context, o.PostTaskHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

@@ -31,7 +31,7 @@ services:
     environment:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
-      - POSTGRES_DB=${POSTGRES_DB:-golang-nextjs}
+      - POSTGRES_DB=${POSTGRES_DB:-golang_nextjs}
 
 volumes:
   pgdata:

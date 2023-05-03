@@ -1,25 +1,36 @@
 package handler
 
 import (
+	"context"
 	"golang-nextjs-app/controller"
+	"golang-nextjs-app/database"
+	"golang-nextjs-app/gateway/firebase"
+	"golang-nextjs-app/gateway/postgres"
 	"golang-nextjs-app/restapi/operations"
+	"golang-nextjs-app/usecase"
 )
 
 func HandleRestApi(api *operations.GolangNextjsAPI) {
-	// db, err := database.NewDb()
-	// if err != nil {
-	// 	fmt.Println("failed to connect database:", err)
-	// 	return
-	// }
-	// DB repository
-	// // userRepo := postgres.NewUserRepository(db)
-	// taskRepo := postgres.NewTaskRepository(db)
 
-	// // usecase
-	// taskUsecase := usecase.NewTaskUseCase(db, taskRepo)
+	ctx := context.Background()
+	db, err := database.NewDb()
+	if err != nil {
+		return
+	}
+	app := firebase.InitFirebase()
+	auth, err := app.Auth(ctx)
+	if err != nil {
+		return
+	}
 
-	taskController := controller.NewTaskController()
+	taskRepo := postgres.NewTaskRepository(db)
+	taskUsecase := usecase.NewTaskUsecase(taskRepo, auth)
+	taskController := controller.NewTaskController(
+		taskUsecase,
+	)
 
 	api.GetTasksHandler = operations.GetTasksHandlerFunc(taskController.GetAllTasks)
-	// api.GetTasksIDHandler = operations.GetTasksIDHandlerFunc(taskController.GetTaskById)
+	api.PostTaskHandler = operations.PostTaskHandlerFunc(taskController.CreateTask)
+	api.GetTasksIDHandler = operations.GetTasksIDHandlerFunc(taskController.GetTaskByID)
+	api.DeleteTasksIDHandler = operations.DeleteTasksIDHandlerFunc(taskController.DeleteTask)
 }

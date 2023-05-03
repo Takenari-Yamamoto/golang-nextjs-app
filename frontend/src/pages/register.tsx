@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/config/firebase";
 import WithoutAuth from "@/middleware/withoutAuth";
-import login from "./login";
 import { authRepository } from "@/api/authRepository";
 
 const SignupPage: React.FC = () => {

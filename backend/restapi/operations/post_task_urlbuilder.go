@@ -9,22 +9,17 @@ import (
 	"errors"
 	"net/url"
 	golangswaggerpaths "path"
-	"strings"
 )
 
-// GetUsersIDURL generates an URL for the get users ID operation
-type GetUsersIDURL struct {
-	ID string
-
+// PostTaskURL generates an URL for the post task operation
+type PostTaskURL struct {
 	_basePath string
-	// avoid unkeyed usage
-	_ struct{}
 }
 
 // WithBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetUsersIDURL) WithBasePath(bp string) *GetUsersIDURL {
+func (o *PostTaskURL) WithBasePath(bp string) *PostTaskURL {
 	o.SetBasePath(bp)
 	return o
 }
@@ -32,22 +27,15 @@ func (o *GetUsersIDURL) WithBasePath(bp string) *GetUsersIDURL {
 // SetBasePath sets the base path for this url builder, only required when it's different from the
 // base path specified in the swagger spec.
 // When the value of the base path is an empty string
-func (o *GetUsersIDURL) SetBasePath(bp string) {
+func (o *PostTaskURL) SetBasePath(bp string) {
 	o._basePath = bp
 }
 
 // Build a url path and query string
-func (o *GetUsersIDURL) Build() (*url.URL, error) {
+func (o *PostTaskURL) Build() (*url.URL, error) {
 	var _result url.URL
 
-	var _path = "/users/{id}"
-
-	id := o.ID
-	if id != "" {
-		_path = strings.Replace(_path, "{id}", id, -1)
-	} else {
-		return nil, errors.New("id is required on GetUsersIDURL")
-	}
+	var _path = "/task"
 
 	_basePath := o._basePath
 	if _basePath == "" {
@@ -59,7 +47,7 @@ func (o *GetUsersIDURL) Build() (*url.URL, error) {
 }
 
 // Must is a helper function to panic when the url builder returns an error
-func (o *GetUsersIDURL) Must(u *url.URL, err error) *url.URL {
+func (o *PostTaskURL) Must(u *url.URL, err error) *url.URL {
 	if err != nil {
 		panic(err)
 	}
@@ -70,17 +58,17 @@ func (o *GetUsersIDURL) Must(u *url.URL, err error) *url.URL {
 }
 
 // String returns the string representation of the path with query string
-func (o *GetUsersIDURL) String() string {
+func (o *PostTaskURL) String() string {
 	return o.Must(o.Build()).String()
 }
 
 // BuildFull builds a full url with scheme, host, path and query string
-func (o *GetUsersIDURL) BuildFull(scheme, host string) (*url.URL, error) {
+func (o *PostTaskURL) BuildFull(scheme, host string) (*url.URL, error) {
 	if scheme == "" {
-		return nil, errors.New("scheme is required for a full url on GetUsersIDURL")
+		return nil, errors.New("scheme is required for a full url on PostTaskURL")
 	}
 	if host == "" {
-		return nil, errors.New("host is required for a full url on GetUsersIDURL")
+		return nil, errors.New("host is required for a full url on PostTaskURL")
 	}
 
 	base, err := o.Build()
@@ -94,6 +82,6 @@ func (o *GetUsersIDURL) BuildFull(scheme, host string) (*url.URL, error) {
 }
 
 // StringFull returns the string representation of a complete url
-func (o *GetUsersIDURL) StringFull(scheme, host string) string {
+func (o *PostTaskURL) StringFull(scheme, host string) string {
 	return o.Must(o.BuildFull(scheme, host)).String()
 }

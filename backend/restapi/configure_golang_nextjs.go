@@ -49,21 +49,6 @@ func configureAPI(api *operations.GolangNextjsAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetTasks has not yet been implemented")
 		})
 	}
-	if api.GetTasksIDHandler == nil {
-		api.GetTasksIDHandler = operations.GetTasksIDHandlerFunc(func(params operations.GetTasksIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetTasksID has not yet been implemented")
-		})
-	}
-	if api.GetUsersHandler == nil {
-		api.GetUsersHandler = operations.GetUsersHandlerFunc(func(params operations.GetUsersParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetUsers has not yet been implemented")
-		})
-	}
-	if api.GetUsersIDHandler == nil {
-		api.GetUsersIDHandler = operations.GetUsersIDHandlerFunc(func(params operations.GetUsersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetUsersID has not yet been implemented")
-		})
-	}
 
 	api.PreServerShutdown = func() {}
 

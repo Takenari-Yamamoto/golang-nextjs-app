@@ -13,24 +13,24 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-// NewGetUsersIDParams creates a new GetUsersIDParams object
+// NewDeleteTasksIDParams creates a new DeleteTasksIDParams object
 //
 // There are no default values defined in the spec.
-func NewGetUsersIDParams() GetUsersIDParams {
+func NewDeleteTasksIDParams() DeleteTasksIDParams {
 
-	return GetUsersIDParams{}
+	return DeleteTasksIDParams{}
 }
 
-// GetUsersIDParams contains all the bound params for the get users ID operation
+// DeleteTasksIDParams contains all the bound params for the delete tasks ID operation
 // typically these are obtained from a http.Request
 //
-// swagger:parameters GetUsersID
-type GetUsersIDParams struct {
+// swagger:parameters DeleteTasksID
+type DeleteTasksIDParams struct {
 
 	// HTTP Request Object
 	HTTPRequest *http.Request `json:"-"`
 
-	/*ID of the user to get
+	/*The unique identifier of the task
 	  Required: true
 	  In: path
 	*/
@@ -40,8 +40,8 @@ type GetUsersIDParams struct {
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
 // for simple values it will use straight method calls.
 //
-// To ensure default values, the struct must have been initialized with NewGetUsersIDParams() beforehand.
-func (o *GetUsersIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
+// To ensure default values, the struct must have been initialized with NewDeleteTasksIDParams() beforehand.
+func (o *DeleteTasksIDParams) BindRequest(r *http.Request, route *middleware.MatchedRoute) error {
 	var res []error
 
 	o.HTTPRequest = r
@@ -57,7 +57,7 @@ func (o *GetUsersIDParams) BindRequest(r *http.Request, route *middleware.Matche
 }
 
 // bindID binds and validates parameter ID from path.
-func (o *GetUsersIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
+func (o *DeleteTasksIDParams) bindID(rawData []string, hasKey bool, formats strfmt.Registry) error {
 	var raw string
 	if len(rawData) > 0 {
 		raw = rawData[len(rawData)-1]

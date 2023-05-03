@@ -30,6 +30,90 @@ func init() {
   "host": "localhost:5000",
   "basePath": "/v1",
   "paths": {
+    "/task": {
+      "post": {
+        "description": "This endpoint creates a new task with the given title and content.",
+        "summary": "Create a new task",
+        "parameters": [
+          {
+            "description": "Task object that needs to be added",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "description": "The content of the task",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "The title of the task",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Task created successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Task created successfully."
+                },
+                "task": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, please provide the required parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid input, please provide the required parameters."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tasks": {
       "get": {
         "produces": [
@@ -43,6 +127,30 @@ func init() {
               "type": "array",
               "items": {
                 "$ref": "#/definitions/Task"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, please provide the required parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid input, please provide the required parameters."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error."
+                }
               }
             }
           }
@@ -70,39 +178,29 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Task"
             }
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid integer"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
-      }
-    },
-    "/users": {
-      "get": {
+      },
+      "delete": {
+        "description": "Delete a task by providing its unique identifier.",
         "produces": [
           "application/json"
         ],
-        "summary": "Get a list of users",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get a user by ID",
+        "summary": "Delete a task",
         "parameters": [
           {
             "type": "string",
-            "description": "ID of the user to get",
+            "format": "int64",
+            "description": "The unique identifier of the task",
             "name": "id",
             "in": "path",
             "required": true
@@ -110,10 +208,16 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "description": "Task deleted successfully"
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid string"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -183,6 +287,90 @@ func init() {
   "host": "localhost:5000",
   "basePath": "/v1",
   "paths": {
+    "/task": {
+      "post": {
+        "description": "This endpoint creates a new task with the given title and content.",
+        "summary": "Create a new task",
+        "parameters": [
+          {
+            "description": "Task object that needs to be added",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "description": "The content of the task",
+                  "type": "string"
+                },
+                "title": {
+                  "description": "The title of the task",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Task created successfully.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Task created successfully."
+                },
+                "task": {
+                  "type": "object",
+                  "properties": {
+                    "content": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "format": "int64"
+                    },
+                    "title": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, please provide the required parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid input, please provide the required parameters."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/tasks": {
       "get": {
         "produces": [
@@ -196,6 +384,30 @@ func init() {
               "type": "array",
               "items": {
                 "$ref": "#/definitions/Task"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input, please provide the required parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid input, please provide the required parameters."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error."
+                }
               }
             }
           }
@@ -223,39 +435,29 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Task"
             }
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid integer"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
-      }
-    },
-    "/users": {
-      "get": {
+      },
+      "delete": {
+        "description": "Delete a task by providing its unique identifier.",
         "produces": [
           "application/json"
         ],
-        "summary": "Get a list of users",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get a user by ID",
+        "summary": "Delete a task",
         "parameters": [
           {
             "type": "string",
-            "description": "ID of the user to get",
+            "format": "int64",
+            "description": "The unique identifier of the task",
             "name": "id",
             "in": "path",
             "required": true
@@ -263,16 +465,37 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "description": "Task deleted successfully"
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid string"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
     }
   },
   "definitions": {
+    "PostTaskCreatedBodyTask": {
+      "type": "object",
+      "properties": {
+        "content": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "title": {
+          "type": "string"
+        }
+      }
+    },
     "Task": {
       "type": "object",
       "properties": {

@@ -57,3 +57,78 @@ func (o *GetTasksIDOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pr
 		}
 	}
 }
+
+// GetTasksIDBadRequestCode is the HTTP code returned for type GetTasksIDBadRequest
+const GetTasksIDBadRequestCode int = 400
+
+/*
+GetTasksIDBadRequest Invalid input, ID must be a valid integer
+
+swagger:response getTasksIdBadRequest
+*/
+type GetTasksIDBadRequest struct {
+}
+
+// NewGetTasksIDBadRequest creates GetTasksIDBadRequest with default headers values
+func NewGetTasksIDBadRequest() *GetTasksIDBadRequest {
+
+	return &GetTasksIDBadRequest{}
+}
+
+// WriteResponse to the client
+func (o *GetTasksIDBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(400)
+}
+
+// GetTasksIDNotFoundCode is the HTTP code returned for type GetTasksIDNotFound
+const GetTasksIDNotFoundCode int = 404
+
+/*
+GetTasksIDNotFound Task not found
+
+swagger:response getTasksIdNotFound
+*/
+type GetTasksIDNotFound struct {
+}
+
+// NewGetTasksIDNotFound creates GetTasksIDNotFound with default headers values
+func NewGetTasksIDNotFound() *GetTasksIDNotFound {
+
+	return &GetTasksIDNotFound{}
+}
+
+// WriteResponse to the client
+func (o *GetTasksIDNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(404)
+}
+
+// GetTasksIDInternalServerErrorCode is the HTTP code returned for type GetTasksIDInternalServerError
+const GetTasksIDInternalServerErrorCode int = 500
+
+/*
+GetTasksIDInternalServerError Internal server error
+
+swagger:response getTasksIdInternalServerError
+*/
+type GetTasksIDInternalServerError struct {
+}
+
+// NewGetTasksIDInternalServerError creates GetTasksIDInternalServerError with default headers values
+func NewGetTasksIDInternalServerError() *GetTasksIDInternalServerError {
+
+	return &GetTasksIDInternalServerError{}
+}
+
+// WriteResponse to the client
+func (o *GetTasksIDInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
+
+	rw.WriteHeader(500)
+}

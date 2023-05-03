@@ -1,13 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useTask } from "@/hooks/api/useTask";
+import { TaskCard } from "@/components/task/card/TaskCard";
 import Head from "next/head";
-import { apiClient } from "@/libs/api-client";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/config/firebase";
 import WithAuth from "@/middleware/withAuth";
-import { useAuth } from "@/contexts/AuthContext";
+import style from "@/styles/pages/task-list.module.scss";
 
 const Home: React.FC = () => {
-  const { user } = useAuth();
+  const { tasks, fetchAllTasks, loading, error } = useTask();
+
+  useEffect(() => {
+    fetchAllTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (loading) {
+    <div>Loading</div>;
+  }
+
+  if (error) {
+    return <div>Error</div>;
+  }
+
+  if (!tasks) {
+    return <div>No tasks</div>;
+  }
 
   return (
     <>
@@ -18,8 +34,10 @@ const Home: React.FC = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div>
-          <p>Name: {user?.email}</p>
+        <div className={style.root}>
+          {tasks.map((task, i) => {
+            return <TaskCard className={style.card} key={i} {...task} />;
+          })}
         </div>
       </main>
     </>
