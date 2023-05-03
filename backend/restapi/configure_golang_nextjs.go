@@ -12,6 +12,7 @@ import (
 	"github.com/rs/cors"
 
 	restHandler "golang-nextjs-app/handler"
+	appMiddleware "golang-nextjs-app/middleware"
 	"golang-nextjs-app/restapi/operations"
 )
 
@@ -93,5 +94,7 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // So this is a good place to plug in a panic handling middleware, logging and metrics.
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
 	handleCORS := cors.Default().Handler
-	return handleCORS(handler)
+	return appMiddleware.AuthMiddleware(
+		handleCORS(handler),
+	)
 }

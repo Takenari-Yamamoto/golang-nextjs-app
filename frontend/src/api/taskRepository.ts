@@ -1,6 +1,14 @@
 import { apiClient } from "@/libs/api-client";
 import { AxiosInstance } from "axios";
 
+type Task = {
+  content: string;
+  created_at: string;
+  created_by: string;
+  id: string;
+  title: string;
+};
+
 interface TaskRepository {
   getTasks(): Promise<any>;
   //   getTask(id: number): Promise<Task>;
