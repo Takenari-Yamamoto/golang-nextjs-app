@@ -10,21 +10,47 @@ import (
 	"google.golang.org/api/option"
 )
 
-var firebaseApp *firebase.App
+type Firebase struct{}
 
-func InitFirebase() {
-	opt := option.WithCredentialsFile("backend/config/golang-nextjs-app-firebase-adminsdk-xbyxa-6027c29d3d.json")
+func NewFirebase() *Firebase {
+	return &Firebase{}
+}
+
+func InitFirebase() *firebase.App {
+	opt := option.WithCredentialsFile("/Users/takenariyamamoto/Downloads/golang-nextjs-app-firebase-adminsdk-xbyxa-0a3e6503bb.json")
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		log.Fatalf("firebase.NewApp: %v", err)
 	}
-	firebaseApp = app
+	return app
 }
 
-func VerifyIDToken(ctx context.Context, idToken string) (*auth.Token, error) {
-	client, err := firebaseApp.Auth(ctx)
+func (f *Firebase) VerifyIDToken(ctx context.Context, idToken string) (*auth.Token, error) {
+	app := InitFirebase()
+	fmt.Println(app)
+	client, err := app.Auth(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error getting Auth client: %v", err)
+		log.Fatalf("error getting Auth client: %v\n", err)
 	}
-	return client.VerifyIDToken(ctx, idToken)
+	token, err := client.VerifyIDToken(ctx, idToken)
+	if err != nil {
+		return nil, err
+	}
+	return &auth.Token{
+		UID: token.UID,
+	}, nil
+}
+
+// UIDを元にユーザー情報を取得
+func (f *Firebase) GetUser(ctx context.Context, uid string) (*auth.UserRecord, error) {
+	app := InitFirebase()
+	client, err := app.Auth(ctx)
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+	user, err := client.GetUser(ctx, uid)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

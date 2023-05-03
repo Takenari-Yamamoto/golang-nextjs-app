@@ -4,16 +4,19 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/rs/cors"
 
+	"golang-nextjs-app/gateway/firebase"
 	restHandler "golang-nextjs-app/handler"
-	appMiddleware "golang-nextjs-app/middleware"
 	"golang-nextjs-app/restapi/operations"
+	"golang-nextjs-app/utils"
 )
 
 //go:generate swagger generate server --target ../../backend --name GolangNextjs --spec ../../schema/swagger.yml --model-package restapi/models --principal interface{}
@@ -93,8 +96,64 @@ func setupMiddlewares(handler http.Handler) http.Handler {
 // The middleware configuration happens before anything, this middleware also applies to serving the swagger.json document.
 // So this is a good place to plug in a panic handling middleware, logging and metrics.
 func setupGlobalMiddleware(handler http.Handler) http.Handler {
-	handleCORS := cors.Default().Handler
-	return appMiddleware.AuthMiddleware(
-		handleCORS(handler),
-	)
+	// CORS設定をカスタマイズ
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Authorization", "Content-Type"},
+		AllowCredentials: true,
+	})
+
+	return AuthMiddleware(c.Handler(handler))
+}
+
+// 認証用ミドルウェア
+func AuthMiddleware(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// CORSプリフライトリクエストの場合、認証をスキップ
+		if r.Method == http.MethodOptions {
+			handler.ServeHTTP(w, r)
+			return
+		}
+		utils.LogRequestHeaders(r)
+		authHeader := r.Header.Get("Authorization")
+		if authHeader == "" {
+			fmt.Println("空っぽです")
+			http.Error(w, "Authorization header is required", http.StatusUnauthorized)
+			return
+		}
+
+		if !strings.HasPrefix(authHeader, "Bearer ") {
+			http.Error(w, "Authorization header must be in the format 'Bearer <token>'", http.StatusUnauthorized)
+			return
+		}
+
+		idToken := strings.TrimPrefix(authHeader, "Bearer ")
+
+		if idToken == "" {
+			http.Error(w, "Bearer token is required", http.StatusUnauthorized)
+			return
+		}
+
+		ctx := r.Context()
+		fbClient := firebase.NewFirebase()
+		token, err := fbClient.VerifyIDToken(ctx, idToken)
+		if err != nil {
+			http.Error(w, "Invalid token: "+err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		user, err := fbClient.GetUser(ctx, token.UID)
+		if err != nil {
+			http.Error(w, "Invalid token: "+err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		if user == nil {
+			http.Error(w, "User not found", http.StatusUnauthorized)
+			return
+		}
+
+		handler.ServeHTTP(w, r)
+	})
 }
