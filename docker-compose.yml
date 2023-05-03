@@ -7,13 +7,17 @@ services:
       dockerfile: backend/docker/golang/Dockerfile
     container_name: backend
     tty: true
-    working_dir: /app
+    working_dir: /go/src/app
     depends_on:
       - db
+    environment:
+      - FIREBASE_CREDENTIALS_FILE=backend/config/firebase_credentials.json
+
     volumes:
-      - ./backend:/app
+      - ./backend:/go/src/app
+      - ${FIREBASE_CREDENTIALS_FILE}:/go/src/app/config/firebase_credentials.json
     ports:
-      - "8080:8080"
+      - "8000:8000"
 
   db:
     build:

@@ -18,7 +18,8 @@ func NewFirebase() *Firebase {
 }
 
 func InitFirebase() *firebase.App {
-	opt := option.WithCredentialsFile("/Users/takenariyamamoto/Downloads/golang-nextjs-app-firebase-adminsdk-xbyxa-0a3e6503bb.json")
+	// よくない気もするが。。
+	opt := option.WithCredentialsFile("config/firebase_credentials.json")
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
 		log.Fatalf("firebase.NewApp: %v", err)
