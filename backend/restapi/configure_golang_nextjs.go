@@ -4,7 +4,6 @@ package restapi
 
 import (
 	"crypto/tls"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -118,7 +117,6 @@ func AuthMiddleware(handler http.Handler) http.Handler {
 		utils.LogRequestHeaders(r)
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
-			fmt.Println("空っぽです")
 			http.Error(w, "Authorization header is required", http.StatusUnauthorized)
 			return
 		}
