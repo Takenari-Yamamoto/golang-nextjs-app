@@ -48,12 +48,6 @@ func NewGolangNextjsAPI(spec *loads.Document) *GolangNextjsAPI {
 		GetTasksIDHandler: GetTasksIDHandlerFunc(func(params GetTasksIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetTasksID has not yet been implemented")
 		}),
-		GetUsersHandler: GetUsersHandlerFunc(func(params GetUsersParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetUsers has not yet been implemented")
-		}),
-		GetUsersIDHandler: GetUsersIDHandlerFunc(func(params GetUsersIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation GetUsersID has not yet been implemented")
-		}),
 		PostTaskHandler: PostTaskHandlerFunc(func(params PostTaskParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostTask has not yet been implemented")
 		}),
@@ -97,10 +91,6 @@ type GolangNextjsAPI struct {
 	GetTasksHandler GetTasksHandler
 	// GetTasksIDHandler sets the operation handler for the get tasks ID operation
 	GetTasksIDHandler GetTasksIDHandler
-	// GetUsersHandler sets the operation handler for the get users operation
-	GetUsersHandler GetUsersHandler
-	// GetUsersIDHandler sets the operation handler for the get users ID operation
-	GetUsersIDHandler GetUsersIDHandler
 	// PostTaskHandler sets the operation handler for the post task operation
 	PostTaskHandler PostTaskHandler
 
@@ -185,12 +175,6 @@ func (o *GolangNextjsAPI) Validate() error {
 	}
 	if o.GetTasksIDHandler == nil {
 		unregistered = append(unregistered, "GetTasksIDHandler")
-	}
-	if o.GetUsersHandler == nil {
-		unregistered = append(unregistered, "GetUsersHandler")
-	}
-	if o.GetUsersIDHandler == nil {
-		unregistered = append(unregistered, "GetUsersIDHandler")
 	}
 	if o.PostTaskHandler == nil {
 		unregistered = append(unregistered, "PostTaskHandler")
@@ -291,14 +275,6 @@ func (o *GolangNextjsAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/tasks/{id}"] = NewGetTasksID(o.context, o.GetTasksIDHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/users"] = NewGetUsers(o.context, o.GetUsersHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/users/{id}"] = NewGetUsersID(o.context, o.GetUsersIDHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

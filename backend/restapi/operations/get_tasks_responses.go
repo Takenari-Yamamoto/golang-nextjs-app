@@ -60,3 +60,93 @@ func (o *GetTasksOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 		panic(err) // let the recovery middleware deal with this
 	}
 }
+
+// GetTasksBadRequestCode is the HTTP code returned for type GetTasksBadRequest
+const GetTasksBadRequestCode int = 400
+
+/*
+GetTasksBadRequest Invalid input, please provide the required parameters.
+
+swagger:response getTasksBadRequest
+*/
+type GetTasksBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *GetTasksBadRequestBody `json:"body,omitempty"`
+}
+
+// NewGetTasksBadRequest creates GetTasksBadRequest with default headers values
+func NewGetTasksBadRequest() *GetTasksBadRequest {
+
+	return &GetTasksBadRequest{}
+}
+
+// WithPayload adds the payload to the get tasks bad request response
+func (o *GetTasksBadRequest) WithPayload(payload *GetTasksBadRequestBody) *GetTasksBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get tasks bad request response
+func (o *GetTasksBadRequest) SetPayload(payload *GetTasksBadRequestBody) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetTasksBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
+// GetTasksInternalServerErrorCode is the HTTP code returned for type GetTasksInternalServerError
+const GetTasksInternalServerErrorCode int = 500
+
+/*
+GetTasksInternalServerError Internal server error.
+
+swagger:response getTasksInternalServerError
+*/
+type GetTasksInternalServerError struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *GetTasksInternalServerErrorBody `json:"body,omitempty"`
+}
+
+// NewGetTasksInternalServerError creates GetTasksInternalServerError with default headers values
+func NewGetTasksInternalServerError() *GetTasksInternalServerError {
+
+	return &GetTasksInternalServerError{}
+}
+
+// WithPayload adds the payload to the get tasks internal server error response
+func (o *GetTasksInternalServerError) WithPayload(payload *GetTasksInternalServerErrorBody) *GetTasksInternalServerError {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get tasks internal server error response
+func (o *GetTasksInternalServerError) SetPayload(payload *GetTasksInternalServerErrorBody) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetTasksInternalServerError) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(500)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}

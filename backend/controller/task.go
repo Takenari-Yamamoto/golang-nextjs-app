@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"golang-nextjs-app/domain"
 	restApiModel "golang-nextjs-app/restapi/models"
 	"golang-nextjs-app/restapi/operations"
 	"golang-nextjs-app/usecase"
@@ -49,17 +50,27 @@ func (c *TaskController) GetAllTasks(params operations.GetTasksParams) middlewar
 		ok = operations.NewGetTasksOK()
 	)
 
-	var tasks []*restApiModel.Task
-	for i := 0; i < 30; i++ {
-		tasks = append(tasks, &restApiModel.Task{
-			ID:        "id" + string(i),
-			Title:     "title",
-			Content:   "content",
-			Done:      false,
-			CreatedAt: strfmt.DateTime{},
-			CreatedBy: "TAKENARI",
-		})
+	var restApiTasks []*restApiModel.Task
+	tasks, err := c.taskUsecase.GetAllTasks(params.HTTPRequest.Context())
+	if err != nil {
+		fmt.Println("タスクの取得に失敗しました ---->>>>", err)
+		return operations.NewGetTasksInternalServerError()
+	}
+	for _, task := range tasks {
+		restApiTasks = append(restApiTasks, convertTaskToRestApiTask(task))
 	}
 
-	return ok.WithPayload(tasks)
+	return ok.WithPayload(restApiTasks)
+}
+
+// domain.Taskをrestapi.Taskに変換する
+func convertTaskToRestApiTask(task *domain.Task) *restApiModel.Task {
+	return &restApiModel.Task{
+		ID:        task.ID,
+		Title:     task.Title,
+		Content:   task.Content,
+		Done:      task.Done,
+		CreatedAt: strfmt.DateTime(task.CreatedAt),
+		CreatedBy: task.CreatedBy,
+	}
 }

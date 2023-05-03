@@ -8,34 +8,6 @@ basePath: /v1
 schemes:
   - http
 paths:
-  /users:
-    get:
-      summary: Get a list of users
-      produces:
-        - application/json
-      responses:
-        200:
-          description: OK
-          schema:
-            type: array
-            items:
-              $ref: "#/definitions/User"
-  /users/{id}:
-    get:
-      summary: Get a user by ID
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: ID of the user to get
-          required: true
-          type: string
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: "#/definitions/User"
   /tasks:
     get:
       summary: Get a list of tasks
@@ -48,6 +20,22 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Task"
+        400:
+          description: Invalid input, please provide the required parameters.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid input, please provide the required parameters.
+        500:
+          description: Internal server error.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Internal server error.
   /tasks/{id}:
     get:
       summary: Get a task by ID

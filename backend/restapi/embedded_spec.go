@@ -129,6 +129,30 @@ func init() {
                 "$ref": "#/definitions/Task"
               }
             }
+          },
+          "400": {
+            "description": "Invalid input, please provide the required parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid input, please provide the required parameters."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error."
+                }
+              }
+            }
           }
         }
       }
@@ -153,50 +177,6 @@ func init() {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Task"
-            }
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get a list of users",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get a user by ID",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "ID of the user to get",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
             }
           }
         }
@@ -366,6 +346,30 @@ func init() {
                 "$ref": "#/definitions/Task"
               }
             }
+          },
+          "400": {
+            "description": "Invalid input, please provide the required parameters.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid input, please provide the required parameters."
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Internal server error."
+                }
+              }
+            }
           }
         }
       }
@@ -390,50 +394,6 @@ func init() {
             "description": "OK",
             "schema": {
               "$ref": "#/definitions/Task"
-            }
-          }
-        }
-      }
-    },
-    "/users": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get a list of users",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/User"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "summary": "Get a user by ID",
-        "parameters": [
-          {
-            "type": "string",
-            "description": "ID of the user to get",
-            "name": "id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/User"
             }
           }
         }
