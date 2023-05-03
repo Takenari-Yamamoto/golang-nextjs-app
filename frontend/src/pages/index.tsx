@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 import { apiClient } from "@/libs/api-client";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/config/firebase";
+import WithAuth from "@/middleware/withAuth";
+import { useAuth } from "@/contexts/AuthContext";
 
-export default function Home() {
-  const [users, setUsers] = useState([]);
-  const fetchUsers = async () => {
-    const res = await apiClient.get("/tasks");
-    console.log(res.data);
-    setUsers(res.data);
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+const Home: React.FC = () => {
+  const { user } = useAuth();
 
   return (
     <>
@@ -23,8 +18,12 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div>fff</div>
+        <div>
+          <p>Name: {user?.email}</p>
+        </div>
       </main>
     </>
   );
-}
+};
+
+export default WithAuth(Home);
