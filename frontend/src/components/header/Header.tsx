@@ -1,16 +1,33 @@
 import React, { FC } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import router from "next/router";
+import login from "@/pages/login";
+import { authRepository } from "@/api/authRepository";
 
 export const Header: FC = () => {
-  // ページ遷移の関数
+  const { user } = useAuth();
+
   const handleLink = (path: string) => {
     router.push(path);
   };
+
+  const authButton = (() => {
+    if (user) {
+      return {
+        text: "ログアウト",
+        func: () => authRepository.logout(),
+      };
+    }
+    return {
+      text: "ログイン",
+      func: () => handleLink("/login"),
+    };
+  })();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -38,7 +55,10 @@ export const Header: FC = () => {
             </Button>
           </Box>
           <Box sx={{ flexGrow: 1 }} />
-          <Button color="inherit">Login</Button>
+
+          <Button color="inherit" onClick={authButton.func}>
+            {authButton.text}
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
