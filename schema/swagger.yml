@@ -64,6 +64,57 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/Task"
+  /task:
+    post:
+      summary: Create a new task
+      description: This endpoint creates a new task with the given title and content.
+      parameters:
+        - in: formData
+          name: title
+          type: string
+          required: true
+          description: The title of the task.
+        - in: formData
+          name: content
+          type: string
+          required: true
+          description: The content of the task.
+      responses:
+        201:
+          description: Task created successfully.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Task created successfully.
+              task:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  title:
+                    type: string
+                  content:
+                    type: string
+        400:
+          description: Invalid input, please provide the required parameters.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid input, please provide the required parameters.
+        500:
+          description: Internal server error.
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Internal server error.
+
 definitions:
   User:
     type: object

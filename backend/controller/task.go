@@ -8,12 +8,15 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-type TaskController struct {
-}
+type TaskController struct{}
 
 func NewTaskController() *TaskController {
 	return &TaskController{}
 }
+
+// func (c *TaskController) CreateTask(params operations.CreateTaskParams) middleware.Responder {
+
+// }
 
 func (c *TaskController) GetAllTasks(params operations.GetTasksParams) middleware.Responder {
 	var (
