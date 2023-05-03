@@ -1,9 +1,9 @@
-import { taskRepository } from "@/api/taskRepository";
+import { Task, taskRepository } from "@/api/taskRepository";
 import { apiClient } from "@/libs/api-client";
 import { useState } from "react";
 
 export const useTask = () => {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 

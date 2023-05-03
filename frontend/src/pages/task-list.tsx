@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+import { TaskCard } from "@/components/task/card/TaskCard";
 import { useTask } from "@/hooks/api/useTask";
 import WithAuth from "@/middleware/withAuth";
-import { useEffect } from "react";
+import style from "@/styles/pages/task-list.module.scss";
 
 const TaskList: React.FC = () => {
   const { tasks, fetchAllTasks, loading, error } = useTask();
@@ -24,10 +26,12 @@ const TaskList: React.FC = () => {
     return <div>No tasks</div>;
   }
 
+  console.log("TASKS", tasks);
+
   return (
-    <div>
+    <div className={style.root}>
       {tasks.map((task, i) => {
-        return <div key={i}>oo</div>;
+        return <TaskCard className={style.card} key={i} {...task} />;
       })}
     </div>
   );

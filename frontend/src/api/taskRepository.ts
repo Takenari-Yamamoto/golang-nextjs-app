@@ -1,7 +1,6 @@
-import { apiClient } from "@/libs/api-client";
 import { AxiosInstance } from "axios";
 
-type Task = {
+export type Task = {
   content: string;
   created_at: string;
   created_by: string;
@@ -19,6 +18,6 @@ interface TaskRepository {
 
 export const taskRepository = (client: AxiosInstance): TaskRepository => {
   return {
-    getTasks: async (): Promise<any> => await client.get("/tasks"),
+    getTasks: async (): Promise<Task> => await client.get("/tasks"),
   };
 };
