@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import WithoutAuth from "@/middleware/withoutAuth";
-import { auth } from "@/config/firebase";
+import { authRepository } from "@/api/authRepository";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -11,7 +10,7 @@ const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await authRepository.login(email, password);
       setEmail("");
       setPassword("");
       setError("");

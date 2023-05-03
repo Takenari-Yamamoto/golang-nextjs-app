@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase";
 import WithoutAuth from "@/middleware/withoutAuth";
+import login from "./login";
+import { authRepository } from "@/api/authRepository";
 
 const SignupPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +22,7 @@ const SignupPage: React.FC = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      await authRepository.login(email, password);
       router.push("/");
     } catch (error) {
       setError("error");
