@@ -1,6 +1,6 @@
 [psql]
-  dbname = "golang-nextjs"
-  host   = "localhost"
+  dbname = "golang_nextjs"
+  host   = "db"
   port   = 5432
   user   = "postgres"
   pass   = "password"
