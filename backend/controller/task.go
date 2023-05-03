@@ -54,13 +54,30 @@ func (c *TaskController) GetAllTasks(params operations.GetTasksParams) middlewar
 	tasks, err := c.taskUsecase.GetAllTasks(params.HTTPRequest.Context())
 	if err != nil {
 		fmt.Println("タスクの取得に失敗しました ---->>>>", err)
-		return operations.NewGetTasksInternalServerError()
+		return operations.NewGetTasksIDOK()
 	}
 	for _, task := range tasks {
 		restApiTasks = append(restApiTasks, convertTaskToRestApiTask(task))
 	}
 
 	return ok.WithPayload(restApiTasks)
+}
+
+func (c *TaskController) GetTaskByID(params operations.GetTasksIDParams) middleware.Responder {
+	var (
+		ok = operations.NewGetTasksIDOK()
+	)
+
+	ctx := params.HTTPRequest.Context()
+	id := params.ID
+
+	task, err := c.taskUsecase.GetTaskByID(ctx, id)
+	if err != nil {
+		fmt.Println("タスクの取得に失敗しました ---->>>>", err)
+		return operations.NewGetTasksIDOK()
+	}
+
+	return ok.WithPayload(convertTaskToRestApiTask(task))
 }
 
 // domain.Taskをrestapi.Taskに変換する
