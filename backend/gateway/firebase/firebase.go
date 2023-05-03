@@ -17,6 +17,7 @@ func NewFirebase() *Firebase {
 }
 
 func InitFirebase() *firebase.App {
+	// よくない気もするが。。
 	opt := option.WithCredentialsFile("config/firebase_credentials.json")
 	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
