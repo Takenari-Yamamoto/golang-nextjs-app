@@ -52,6 +52,33 @@ paths:
           description: OK
           schema:
             $ref: "#/definitions/Task"
+        400:
+          description: Invalid input, ID must be a valid integer
+        404:
+          description: Task not found
+        500:
+          description: Internal server error
+    delete:
+      summary: Delete a task
+      description: Delete a task by providing its unique identifier.
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: id
+          description: The unique identifier of the task
+          required: true
+          type: string
+          format: int64
+      responses:
+        200:
+          description: Task deleted successfully
+        400:
+          description: Invalid input, ID must be a valid string
+        404:
+          description: Task not found
+        500:
+          description: Internal server error
   /task:
     post:
       summary: Create a new task

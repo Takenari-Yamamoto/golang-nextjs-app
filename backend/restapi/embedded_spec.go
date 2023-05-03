@@ -178,6 +178,46 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Task"
             }
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid integer"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a task by providing its unique identifier.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete a task",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "int64",
+            "description": "The unique identifier of the task",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task deleted successfully"
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid string"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -395,6 +435,46 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Task"
             }
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid integer"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete a task by providing its unique identifier.",
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Delete a task",
+        "parameters": [
+          {
+            "type": "string",
+            "format": "int64",
+            "description": "The unique identifier of the task",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task deleted successfully"
+          },
+          "400": {
+            "description": "Invalid input, ID must be a valid string"
+          },
+          "404": {
+            "description": "Task not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }

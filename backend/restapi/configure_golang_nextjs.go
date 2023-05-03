@@ -49,11 +49,6 @@ func configureAPI(api *operations.GolangNextjsAPI) http.Handler {
 			return middleware.NotImplemented("operation operations.GetTasks has not yet been implemented")
 		})
 	}
-	if api.GetTasksIDHandler == nil {
-		api.GetTasksIDHandler = operations.GetTasksIDHandlerFunc(func(params operations.GetTasksIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation operations.GetTasksID has not yet been implemented")
-		})
-	}
 
 	api.PreServerShutdown = func() {}
 

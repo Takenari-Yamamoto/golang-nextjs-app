@@ -14,6 +14,7 @@ export const useTask = () => {
     setLoading(true);
     try {
       await taskRepo.createTask(task);
+      return "success";
     } catch (e) {
       alert(e);
       setError(e as string);
@@ -45,6 +46,19 @@ export const useTask = () => {
     setLoading(false);
   };
 
+  // 削除
+  const deleteTask = async (id: string) => {
+    setLoading(true);
+    try {
+      await taskRepo.deleteTask(id);
+      return "success";
+    } catch (e) {
+      alert(e);
+      setError(e as string);
+    }
+    setLoading(false);
+  };
+
   return {
     loading,
     error,
@@ -53,5 +67,6 @@ export const useTask = () => {
     fetchAllTasks,
     fetchTaskById,
     createTask,
+    deleteTask,
   };
 };

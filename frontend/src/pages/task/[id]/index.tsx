@@ -5,12 +5,11 @@ import { Button } from "@mui/material";
 import WithAuth from "@/middleware/withAuth";
 
 export const TaskDetail = () => {
-  const { fetchTaskById, task, loading, error } = useTask();
+  const { fetchTaskById, task, deleteTask, loading, error } = useTask();
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
-    console.log(id);
     if (id && typeof id === "string") {
       fetchTaskById(id);
     }
@@ -29,6 +28,15 @@ export const TaskDetail = () => {
     return null;
   }
 
+  const handleDelete = async () => {
+    const res = await deleteTask(task.id);
+    if (res === "success") {
+      router.push("/");
+      return;
+    }
+    alert("削除に失敗しました");
+  };
+
   return (
     <>
       <div>
@@ -44,7 +52,7 @@ export const TaskDetail = () => {
       >
         編集
       </Button>
-      <Button variant="contained" color="error">
+      <Button variant="contained" color="error" onClick={handleDelete}>
         削除
       </Button>
     </>

@@ -80,6 +80,22 @@ func (c *TaskController) GetTaskByID(params operations.GetTasksIDParams) middlew
 	return ok.WithPayload(convertTaskToRestApiTask(task))
 }
 
+func (c *TaskController) DeleteTask(params operations.DeleteTasksIDParams) middleware.Responder {
+	var (
+		ok = operations.NewDeleteTasksIDOK()
+	)
+
+	ctx := params.HTTPRequest.Context()
+	id := params.ID
+
+	if err := c.taskUsecase.DeleteTask(ctx, id); err != nil {
+		fmt.Println("タスクの削除に失敗しました ---->>>>", err)
+		return operations.NewDeleteTasksIDOK()
+	}
+
+	return ok
+}
+
 // domain.Taskをrestapi.Taskに変換する
 func convertTaskToRestApiTask(task *domain.Task) *restApiModel.Task {
 	return &restApiModel.Task{

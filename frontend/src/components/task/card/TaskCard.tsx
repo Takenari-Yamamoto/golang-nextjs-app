@@ -22,11 +22,11 @@ export const TaskCard: React.FC<Props> = ({
 
   return (
     <div className={`${style.root} ${className}`} onClick={moveToDetail}>
-      <p>{id}</p>
-      <p>{title}</p>
-      <p>{content}</p>
-      <p>{created_at}</p>
-      <p>{created_by}</p>
+      <p>ID: {id}</p>
+      <p>タイトル：{title}</p>
+      <p>内容：{content}</p>
+      <p>作成日：{created_at}</p>
+      <p>作成者：{created_by}</p>
     </div>
   );
 };

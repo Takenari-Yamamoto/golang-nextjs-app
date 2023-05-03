@@ -18,7 +18,7 @@ interface TaskRepository {
   getTaskById(id: string): Promise<AxiosResponse<Task>>;
   createTask(task: CreateTaskParams): Promise<Task>;
   updateTask(task: Task): Promise<Task>;
-  deleteTask(id: number): Promise<void>;
+  deleteTask(id: string): Promise<void>;
 }
 
 export const taskRepository = (client: AxiosInstance): TaskRepository => {
@@ -30,6 +30,6 @@ export const taskRepository = (client: AxiosInstance): TaskRepository => {
       client.post("/task", task),
     updateTask: (task: Task): Promise<Task> =>
       client.patch(`/tasks/${task.id}`, task),
-    deleteTask: (id: number): Promise<void> => client.delete(`/tasks/${id}`),
+    deleteTask: (id: string): Promise<void> => client.delete(`/tasks/${id}`),
   };
 };

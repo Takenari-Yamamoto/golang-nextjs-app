@@ -32,4 +32,5 @@ func HandleRestApi(api *operations.GolangNextjsAPI) {
 	api.GetTasksHandler = operations.GetTasksHandlerFunc(taskController.GetAllTasks)
 	api.PostTaskHandler = operations.PostTaskHandlerFunc(taskController.CreateTask)
 	api.GetTasksIDHandler = operations.GetTasksIDHandlerFunc(taskController.GetTaskByID)
+	api.DeleteTasksIDHandler = operations.DeleteTasksIDHandlerFunc(taskController.DeleteTask)
 }

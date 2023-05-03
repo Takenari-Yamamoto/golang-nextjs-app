@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import WithAuth from "@/middleware/withAuth";
 import style from "@/styles/pages/task-create.module.scss";
 import { useTask } from "@/hooks/api/useTask";
+import { handleLink } from "@/libs/router";
 
 const CreateTask = () => {
   const { createTask, loading } = useTask();
@@ -21,13 +22,18 @@ const CreateTask = () => {
     });
   };
 
-  //  クリックした
-  const handleClick = () => {
-    console.log(value);
-    createTask({
+  const handleClick = async () => {
+    const res = await createTask({
       title: value.title,
       content: value.content,
     });
+    if (res === "success") {
+      setValue({
+        title: "",
+        content: "",
+      });
+      handleLink("/");
+    }
   };
 
   return (

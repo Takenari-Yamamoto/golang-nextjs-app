@@ -42,6 +42,9 @@ func NewGolangNextjsAPI(spec *loads.Document) *GolangNextjsAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		DeleteTasksIDHandler: DeleteTasksIDHandlerFunc(func(params DeleteTasksIDParams) middleware.Responder {
+			return middleware.NotImplemented("operation DeleteTasksID has not yet been implemented")
+		}),
 		GetTasksHandler: GetTasksHandlerFunc(func(params GetTasksParams) middleware.Responder {
 			return middleware.NotImplemented("operation GetTasks has not yet been implemented")
 		}),
@@ -87,6 +90,8 @@ type GolangNextjsAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// DeleteTasksIDHandler sets the operation handler for the delete tasks ID operation
+	DeleteTasksIDHandler DeleteTasksIDHandler
 	// GetTasksHandler sets the operation handler for the get tasks operation
 	GetTasksHandler GetTasksHandler
 	// GetTasksIDHandler sets the operation handler for the get tasks ID operation
@@ -170,6 +175,9 @@ func (o *GolangNextjsAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.DeleteTasksIDHandler == nil {
+		unregistered = append(unregistered, "DeleteTasksIDHandler")
+	}
 	if o.GetTasksHandler == nil {
 		unregistered = append(unregistered, "GetTasksHandler")
 	}
@@ -267,6 +275,10 @@ func (o *GolangNextjsAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["DELETE"] == nil {
+		o.handlers["DELETE"] = make(map[string]http.Handler)
+	}
+	o.handlers["DELETE"]["/tasks/{id}"] = NewDeleteTasksID(o.context, o.DeleteTasksIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
