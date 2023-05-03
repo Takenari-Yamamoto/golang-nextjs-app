@@ -54,3 +54,20 @@ func (f *Firebase) GetUser(ctx context.Context, uid string) (*auth.UserRecord, e
 	}
 	return user, nil
 }
+
+// auth user を作成
+func (f *Firebase) CreateUser(ctx context.Context, email, password string) (*auth.UserRecord, error) {
+	app := InitFirebase()
+	client, err := app.Auth(ctx)
+	if err != nil {
+		log.Fatalf("error getting Auth client: %v\n", err)
+	}
+	params := (&auth.UserToCreate{}).
+		Email(email).
+		Password(password)
+	user, err := client.CreateUser(ctx, params)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
