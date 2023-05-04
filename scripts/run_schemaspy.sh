@@ -14,7 +14,7 @@ NETWORK_NAME=golang-nextjs-app_app-network
 docker pull schemaspy/schemaspy
 
 # SchemaSpyを実行
-docker run -v "$(pwd)":/output --rm \
+docker run -v "$(pwd)/schema/er_diagram":/output --rm \
   --network ${NETWORK_NAME} \
   schemaspy/schemaspy \
   -t ${DB_TYPE} \

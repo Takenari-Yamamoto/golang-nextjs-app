@@ -26,3 +26,7 @@ generate-models:
 
 generate-go-swagger:
 	swagger generate server -A golang-nextjs -f schema/swagger.yml -m restapi/models -t backend
+
+# DBスキーマからER図を生成
+generate-erd:
+	bash scripts/run_schemaspy.sh
