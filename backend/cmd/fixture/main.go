@@ -10,6 +10,7 @@ import (
 
 const (
 	auth = "create_auth_user"
+	task = "create_task"
 )
 
 func main() {
@@ -27,6 +28,9 @@ func main() {
 	case auth:
 		log.Println("auth user を作成します")
 		tools.CreateDummyAuthUser(ctx)
+	case task:
+		log.Println("task を作成します")
+		tools.CreateDummyTask(ctx)
 	default:
 		fmt.Println("不明な引数です")
 	}
