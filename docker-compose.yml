@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     environment:
-      - FIREBASE_CREDENTIALS_FILE=backend/config/firebase_credentials.json
+      - FIREBASE_CREDENTIALS_FILE=/Users/takenariyamamoto/Downloads/golang-nextjs-app-firebase-adminsdk-xbyxa-6027c29d3d.json
 
     volumes:
       - ./backend:/go/src/app
@@ -32,6 +32,12 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-password}
       - POSTGRES_DB=${POSTGRES_DB:-golang_nextjs}
+    networks:
+      - app-network
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge
