@@ -15,7 +15,6 @@ import (
 	"golang-nextjs-app/gateway/firebase"
 	restHandler "golang-nextjs-app/handler"
 	"golang-nextjs-app/restapi/operations"
-	"golang-nextjs-app/utils"
 )
 
 //go:generate swagger generate server --target ../../backend --name GolangNextjs --spec ../../schema/swagger.yml --model-package restapi/models --principal interface{}
@@ -99,7 +98,6 @@ func AuthMiddleware(handler http.Handler) http.Handler {
 			handler.ServeHTTP(w, r)
 			return
 		}
-		utils.LogRequestHeaders(r)
 		authHeader := r.Header.Get("Authorization")
 		if authHeader == "" {
 			http.Error(w, "Authorization header is required", http.StatusUnauthorized)

@@ -6,6 +6,7 @@ import (
 	restApiModel "golang-nextjs-app/restapi/models"
 	"golang-nextjs-app/restapi/operations"
 	"golang-nextjs-app/usecase"
+	"log"
 	"strings"
 
 	"github.com/go-openapi/runtime/middleware"
@@ -59,6 +60,8 @@ func (c *TaskController) GetAllTasks(params operations.GetTasksParams) middlewar
 	for _, task := range tasks {
 		restApiTasks = append(restApiTasks, convertTaskToRestApiTask(task))
 	}
+
+	log.Println("タスクの取得に成功しました")
 
 	return ok.WithPayload(restApiTasks)
 }
