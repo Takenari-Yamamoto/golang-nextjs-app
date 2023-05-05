@@ -7,7 +7,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <Header />
-      <Component {...pageProps} />
+      <div style={{ padding: "48px" }}>
+        <Component {...pageProps} />
+      </div>
     </AuthProvider>
   );
 }
