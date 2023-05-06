@@ -3,6 +3,7 @@ package database
 import (
 	"database/sql"
 	"fmt"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -10,15 +11,21 @@ import (
 type DSNParam string
 
 const (
-	Host     DSNParam = "postgresql"
-	User     DSNParam = "postgres"
-	Password DSNParam = "password"
-	DBName   DSNParam = "golang_nextjs"
-	Port     DSNParam = "5432"
+	EnvHost     = "DB_HOST"
+	EnvUser     = "DB_USER"
+	EnvPassword = "DB_PASSWORD"
+	EnvDBName   = "DB_NAME"
+	EnvPort     = "DB_PORT"
 )
 
 func NewDb() (*sql.DB, error) {
+	host := os.Getenv(EnvHost)
+	user := os.Getenv(EnvUser)
+	password := os.Getenv(EnvPassword)
+	dbname := os.Getenv(EnvDBName)
+	port := os.Getenv(EnvPort)
+
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Tokyo",
-		Host, User, Password, DBName, Port)
+		host, user, password, dbname, port)
 	return sql.Open("postgres", dsn)
 }
