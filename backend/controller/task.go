@@ -35,12 +35,12 @@ func (c *TaskController) CreateTask(params operations.PostTaskParams) middleware
 	idToken := strings.TrimPrefix(bt, "Bearer ")
 	b := params.Body
 
-	fmt.Println("token です", idToken)
-
 	if _, err := c.taskUsecase.CreateTask(ctx, *b.Title, *b.Content, idToken); err != nil {
 		fmt.Println("タスクの作成に失敗しました ---->>>>", err)
 		return operations.NewPostTaskInternalServerError()
 	}
+
+	log.Println("タスクの作成に成功しました")
 
 	return ok
 
