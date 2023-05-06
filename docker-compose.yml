@@ -38,6 +38,20 @@ services:
     networks:
       - app-network
 
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: frontend
+  #   tty: true
+  #   working_dir: /app
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/app
+  #   networks:
+  #     - app-network
+
 volumes:
   pgdata:
 
