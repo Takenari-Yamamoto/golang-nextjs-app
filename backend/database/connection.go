@@ -10,15 +10,16 @@ import (
 type DSNParam string
 
 const (
-	Host     DSNParam = "postgresql"
+	Host     DSNParam = "127.0.0.1"
 	User     DSNParam = "postgres"
 	Password DSNParam = "password"
-	DBName   DSNParam = "golang_nextjs"
+	DBName   DSNParam = "golang-nextjs-db"
 	Port     DSNParam = "5432"
 )
 
 func NewDb() (*sql.DB, error) {
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Tokyo",
-		Host, User, Password, DBName, Port)
+		"127.0.0.1", User, Password, DBName, Port)
+
 	return sql.Open("postgres", dsn)
 }

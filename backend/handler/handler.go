@@ -2,12 +2,14 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"golang-nextjs-app/controller"
 	"golang-nextjs-app/database"
 	"golang-nextjs-app/gateway/firebase"
 	"golang-nextjs-app/gateway/postgres"
 	"golang-nextjs-app/restapi/operations"
 	"golang-nextjs-app/usecase"
+	"log"
 )
 
 func HandleRestApi(api *operations.GolangNextjsAPI) {
@@ -22,6 +24,13 @@ func HandleRestApi(api *operations.GolangNextjsAPI) {
 	if err != nil {
 		return
 	}
+
+	// データベースに接続できるか確認
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Error pinging database: %v", err)
+	}
+	fmt.Println("Successfully connected to GCP Cloud SQL instance!")
 
 	taskRepo := postgres.NewTaskRepository(db)
 	taskUsecase := usecase.NewTaskUsecase(taskRepo, auth)
