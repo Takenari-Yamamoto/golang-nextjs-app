@@ -1,21 +1,25 @@
-# Go-swagger アプリ用の基本イメージを指定
-FROM golang:1.20
+# ベースイメージを指定
+FROM golang:1.20 as builder
 
-# アプリケーションの作業ディレクトリを設定
+# ワークディレクトリを設定
 WORKDIR /app
 
-# モジュールをダウンロードしてキャッシュ
-COPY go.mod go.sum ./
+# 依存関係をコピー
+COPY go.mod .
+COPY go.sum .
+
+# 依存関係をインストール
 RUN go mod download
 
 # ソースコードをコピー
 COPY . .
 
-# アプリケーションのビルド
-RUN go build -o main ./cmd/golang-nextjs-server/main.go
+# アプリをビルド
+RUN go build -o golang-nextjs-app cmd/golang-nextjs-server/main.go
 
-# ポート番号を環境変数として設定 (Cloud Run は 8080 を推奨)
-ENV PORT 8080
+# ポートをエクスポート
+EXPOSE 8080
 
-# 実行可能なバイナリを指定
-ENTRYPOINT ["/app/main"]
+
+# コンテナ起動時のコマンドを設定
+CMD ["./golang-nextjs-app", "--host=0.0.0.0", "--port=8080"]
