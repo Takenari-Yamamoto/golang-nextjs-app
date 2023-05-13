@@ -19,7 +19,7 @@ const SignupPage: React.FC = () => {
     }
 
     try {
-      await authRepository.login(email, password);
+      await authRepository.register(email, password);
       router.push("/");
     } catch (error) {
       setError("error");
