@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"golang-nextjs-app/domain"
+	"golang-nextjs-app/gateway/slack"
 	restApiModel "golang-nextjs-app/restapi/models"
 	"golang-nextjs-app/restapi/operations"
 	"golang-nextjs-app/usecase"
@@ -37,10 +38,12 @@ func (c *TaskController) CreateTask(params operations.PostTaskParams) middleware
 
 	if _, err := c.taskUsecase.CreateTask(ctx, *b.Title, *b.Content, idToken); err != nil {
 		fmt.Println("タスクの作成に失敗しました ---->>>>", err)
+		slack.SendNotificationToSlack(slack.Error, err.Error())
 		return operations.NewPostTaskInternalServerError()
 	}
 
 	log.Println("タスクの作成に成功しました")
+	slack.SendNotificationToSlack(slack.Success, "タスクの作成に成功しました")
 
 	return ok
 
