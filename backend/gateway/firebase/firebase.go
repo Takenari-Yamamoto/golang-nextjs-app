@@ -2,10 +2,15 @@ package firebase
 
 import (
 	"context"
+	"fmt"
 	"log"
+	"os"
 
+	secretmanager "cloud.google.com/go/secretmanager/apiv1"
+	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
+	"golang.org/x/oauth2/google"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -17,12 +22,51 @@ func NewFirebase() *Firebase {
 	return &Firebase{}
 }
 
+func getFirebaseCredentialsFromSecretManager(ctx context.Context, secretName string) ([]byte, error) {
+	client, err := secretmanager.NewClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
+
+	// Secret Managerから認証情報を取得
+	accessRequest := &secretmanagerpb.AccessSecretVersionRequest{
+		Name: secretName,
+	}
+
+	result, err := client.AccessSecretVersion(ctx, accessRequest)
+	if err != nil {
+		return nil, err
+	}
+
+	return result.Payload.Data, nil
+}
+
 func InitFirebase() *firebase.App {
-	opt := option.WithCredentialsFile("config/firebase_credentials.json")
-	app, err := firebase.NewApp(context.Background(), nil, opt)
+	ctx := context.Background()
+
+	// Secret Managerから認証情報を取得
+	projectID := os.Getenv("PROJECT_ID")
+	secretName := fmt.Sprintf("projects/%s/secrets/firebase_credentials/versions/latest", projectID)
+	credentials, err := getFirebaseCredentialsFromSecretManager(ctx, secretName)
+	log.Println("credentials", string(credentials))
+	if err != nil {
+		log.Fatalf("failed to fetch firebase credentials: %v", err)
+	}
+
+	// 認証情報を使用してGoogleのクレデンシャルを作成
+	creds, err := google.CredentialsFromJSON(ctx, credentials)
+	if err != nil {
+		log.Fatalf("failed to create credentials from json: %v", err)
+	}
+
+	// Firebaseの設定
+	opt := option.WithCredentials(creds)
+	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {
 		log.Fatalf("firebase.NewApp: %v", err)
 	}
+
 	return app
 }
 
