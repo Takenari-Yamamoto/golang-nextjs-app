@@ -12,6 +12,11 @@ services:
       - db
     environment:
       - FIREBASE_CREDENTIALS_FILE=/Users/takenariyamamoto/Downloads/golang-nextjs-app-firebase-adminsdk-xbyxa-6027c29d3d.json
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=golang_nextjs
     links:
       - db:postgresql
     volumes:
@@ -37,6 +42,20 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-golang_nextjs}
     networks:
       - app-network
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: frontend
+  #   tty: true
+  #   working_dir: /app
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/app
+  #   networks:
+  #     - app-network
 
 volumes:
   pgdata:
