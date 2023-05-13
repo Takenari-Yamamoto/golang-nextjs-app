@@ -65,6 +65,7 @@ func InitFirebase() *firebase.App {
 	if err != nil {
 		log.Fatalf("firebase.NewApp: %v", err)
 	}
+
 	return app
 }
 
