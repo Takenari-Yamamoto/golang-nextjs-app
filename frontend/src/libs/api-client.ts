@@ -2,8 +2,7 @@ import axios from "axios";
 import { getToken } from "./firebase";
 
 export const apiClient = axios.create({
-  baseURL: "http://localhost:8000/v1",
-  // baseURL: "https://golang-nextjs-deploy-umeslybd3q-an.a.run.app/v1",
+  baseURL: `${process.env.NEXT_PUBLIC_API_ENDPOINT}`,
 });
 
 apiClient.interceptors.request.use(async (config) => {

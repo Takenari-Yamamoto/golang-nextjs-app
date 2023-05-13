@@ -53,6 +53,7 @@ func InitFirebase() *firebase.App {
 	if err != nil {
 		log.Fatalf("failed to fetch firebase credentials: %v", err)
 	}
+	// MEMO: 本当はsceret managerから取得したいがうまくいかないので一旦ファイルに書き出している
 	err = ioutil.WriteFile("config/firebase_credentials.json", credentials, 0644)
 	if err != nil {
 		log.Fatalf("failed to write secret to file: %v", err)
