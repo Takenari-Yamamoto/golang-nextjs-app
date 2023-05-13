@@ -3,6 +3,7 @@ package firebase
 import (
 	"context"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 
@@ -10,7 +11,6 @@ import (
 	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
-	"golang.org/x/oauth2/google"
 	"google.golang.org/api/iterator"
 	"google.golang.org/api/option"
 )
@@ -53,17 +53,14 @@ func InitFirebase() *firebase.App {
 	if err != nil {
 		log.Fatalf("failed to fetch firebase credentials: %v", err)
 	}
-
-	creds, err := google.CredentialsFromJSON(ctx, credentials)
+	err = ioutil.WriteFile("config/firebase_credentials.json", credentials, 0644)
 	if err != nil {
-		log.Fatalf("failed to create credentials from json: %v", err)
+		log.Fatalf("failed to write secret to file: %v", err)
 	}
-
-	// Firebaseの設定
-	opt := option.WithCredentials(creds)
-	app, err := firebase.NewApp(ctx, nil, opt)
+	opt := option.WithCredentialsFile("config/firebase_credentials.json")
+	app, err := firebase.NewApp(context.Background(), nil, opt)
 	if err != nil {
-		log.Fatalf("firebase.NewApp: %v", err)
+		log.Fatalf("error initializing app: %v", err)
 	}
 
 	return app
