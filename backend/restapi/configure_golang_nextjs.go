@@ -4,6 +4,7 @@ package restapi
 
 import (
 	"crypto/tls"
+	"log"
 	"net/http"
 	"strings"
 
@@ -85,9 +86,9 @@ func setupGlobalMiddleware(handler http.Handler) http.Handler {
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Authorization", "Content-Type"},
 		AllowCredentials: true,
-	})
+	}).Handler(handler)
 
-	return AuthMiddleware(c.Handler(handler))
+	return AuthMiddleware(c)
 }
 
 // 認証用ミドルウェア
@@ -123,17 +124,22 @@ func AuthMiddleware(handler http.Handler) http.Handler {
 			http.Error(w, "Invalid token: "+err.Error(), http.StatusUnauthorized)
 			return
 		}
+		log.Default().Println("トークンから取得したUID: ", token.UID)
 
 		user, err := fbClient.GetUser(ctx, token.UID)
+
 		if err != nil {
+			log.Fatal("Auth User の取得に失敗しました: ", err)
 			http.Error(w, "Invalid token: "+err.Error(), http.StatusUnauthorized)
 			return
 		}
 
 		if user == nil {
+			log.Fatal("User not found")
 			http.Error(w, "User not found", http.StatusUnauthorized)
 			return
 		}
+		log.Println("取得したユーザー: ", user.Email)
 
 		handler.ServeHTTP(w, r)
 	})

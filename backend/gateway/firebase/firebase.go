@@ -36,8 +36,10 @@ func getFirebaseCredentialsFromSecretManager(ctx context.Context, secretName str
 
 	result, err := client.AccessSecretVersion(ctx, accessRequest)
 	if err != nil {
+		log.Default().Println("Secret Managerからの認証情報の取得に失敗しました: ", err)
 		return nil, err
 	}
+	log.Default().Println("Secret Managerからの認証情報の取得に成功しました: ", result)
 
 	return result.Payload.Data, nil
 }
@@ -45,16 +47,13 @@ func getFirebaseCredentialsFromSecretManager(ctx context.Context, secretName str
 func InitFirebase() *firebase.App {
 	ctx := context.Background()
 
-	// Secret Managerから認証情報を取得
 	projectID := os.Getenv("PROJECT_ID")
 	secretName := fmt.Sprintf("projects/%s/secrets/firebase_credentials/versions/latest", projectID)
 	credentials, err := getFirebaseCredentialsFromSecretManager(ctx, secretName)
-	log.Println("credentials", string(credentials))
 	if err != nil {
 		log.Fatalf("failed to fetch firebase credentials: %v", err)
 	}
 
-	// 認証情報を使用してGoogleのクレデンシャルを作成
 	creds, err := google.CredentialsFromJSON(ctx, credentials)
 	if err != nil {
 		log.Fatalf("failed to create credentials from json: %v", err)
@@ -69,6 +68,16 @@ func InitFirebase() *firebase.App {
 
 	return app
 }
+
+// func InitFirebase() *firebase.App {
+// 	opt := option.WithCredentialsFile("config/firebase_credentials.json")
+// 	app, err := firebase.NewApp(context.Background(), nil, opt)
+// 	fmt.Printf("app: %+v\n", app)
+// 	if err != nil {
+// 		log.Fatalf("firebase.NewApp: %v", err)
+// 	}
+// 	return app
+// }
 
 func (f *Firebase) VerifyIDToken(ctx context.Context, idToken string) (*auth.Token, error) {
 	app := InitFirebase()
